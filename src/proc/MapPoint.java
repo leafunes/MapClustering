@@ -27,5 +27,10 @@ public class MapPoint {
 	public double getLon(){
 		return lon;
 	}
+	
+	public MapPoint clone(){
+		MapPoint ret = new MapPoint(lat,lon);
+		return ret;
+	}
 
 }

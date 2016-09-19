@@ -4,31 +4,33 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
-import javax.swing.JInternalFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
-import javax.swing.JToolBar;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.osgi.framework.SynchronousBundleListener;
+import org.json.simple.parser.ParseException;
+import org.openstreetmap.gui.jmapviewer.Coordinate;
+import org.openstreetmap.gui.jmapviewer.JMapViewer;
+import org.openstreetmap.gui.jmapviewer.MapMarkerCircle;
+import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
+import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
 
-import javax.swing.Action;
-import javax.swing.JButton;
+import proc.MapData;
+import proc.MapPoint;
+
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.awt.Rectangle;
 
 public class MainForm {
 
@@ -36,8 +38,11 @@ public class MainForm {
 	private JFileChooser fileChooser;
 	private JTabbedPane tabbedPane;
 	private JPanel mapPanel;
+	private JMapViewer map;
 	
-	File file;
+	private MapData mapData;
+	
+	private File file;
 	
 	/**
 	 * Launch the application.
@@ -67,9 +72,11 @@ public class MainForm {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
+		mapData = new MapData();
 		
 		fileChooser = new JFileChooser();
 
@@ -77,16 +84,19 @@ public class MainForm {
 		fileChooser.setFileFilter(filter);
 		
 		tabsInit();
+		mapInit();
+
 		menuInit();
 	}
 	
 	private void tabsInit(){
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(0, 0, 448, 275);
+		tabbedPane.setBounds(0, 0, 798, 575);
 		frame.getContentPane().add(tabbedPane);
 		
 		mapPanel = new JPanel();
+		mapPanel.setBounds(0, 0, 448, 275);
 		tabbedPane.addTab("Mapa", null, mapPanel, null);
 		mapPanel.setLayout(null);
 	}
@@ -94,7 +104,7 @@ public class MainForm {
 	private void menuInit(){
 		//Map Menu
 		JMenuBar mapMenu = new JMenuBar();
-		mapMenu.setBounds(0, 0, 443, 21);
+		mapMenu.setBounds(0, 0, 793, 21);
 		mapPanel.add(mapMenu);
 		
 		JMenu mapArchivo = new JMenu("Archivo");
@@ -115,8 +125,8 @@ public class MainForm {
 			public void actionPerformed(ActionEvent e) {;
 				fileChooser.showOpenDialog(null);
 				file = fileChooser.getSelectedFile();
-				printFile();
-				
+				importMapFile();
+				loadMapPoints();
 				fileChooser.setSelectedFile(null);
 				
 			}
@@ -127,22 +137,40 @@ public class MainForm {
 		//Clusters Menu
 	}
 	
-	public void printFile(){
+	private void loadMapPoints() {
+		
+		ArrayList<MapPoint> points = mapData.getPoints();
+		
+		for(MapPoint point : points){
+			
+			Coordinate coord = new Coordinate(point.getLat(), point.getLon());
+			
+			MapMarkerDot marker = new MapMarkerDot(coord);
+			
+			map.addMapMarker(marker);
+			
+		}
+		
+	}
+
+	public void mapInit(){
+		
+		map = new JMapViewer();
+		map.setBounds(new Rectangle(0, 21, 793, 527));
+		mapPanel.add(map);
+		
+		
+	}
+	
+	public void importMapFile(){
 		
 		if(file != null){
 			try {
-				FileReader reader = new FileReader(file);
-				BufferedReader buff = new BufferedReader(reader);
+				mapData.loadFromFile(file);
 				
-				String line = "";
-				
-				while((line = buff.readLine()) != null) System.out.println(line);
-				
-				buff.close();
-				reader.close();
-				
-			} catch (IOException e) {
+			} catch (IOException | ParseException e) {
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(mapPanel, "No se pudo cargar el archivo", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		
