@@ -80,7 +80,6 @@ public class MainForm {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		mapData = new MapData();
 		
 		fileChooser = new JFileChooser();
 
@@ -89,6 +88,8 @@ public class MainForm {
 		
 		tabsInit();
 		mapInit();
+		
+		newMap();
 
 		menuInit();
 	}
@@ -145,6 +146,21 @@ public class MainForm {
 			}
 		});
 		
+		mapExportar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fileChooser.showSaveDialog(null);
+				file = fileChooser.getSelectedFile();
+				if (fileChooser.getFileFilter().getDescription().equals("Map Files *.map"))
+					file = new File(file.getAbsoluteFile() + ".map");
+					
+				exportMapFile();
+				fileChooser.setSelectedFile(null);
+				
+			}
+		});
+		
 		mapDesdeMapa.addActionListener(new ActionListener() {
 			
 			@Override
@@ -154,11 +170,41 @@ public class MainForm {
 			}
 		});
 		
+		mapCoordenadas.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String latStr = JOptionPane.showInputDialog("Latitud");
+				String lonStr = JOptionPane.showInputDialog("Longitud");
+				if(latStr != null && lonStr != null){
+					double lat = Double.parseDouble(latStr);
+					double lon = Double.parseDouble(lonStr);
+					
+					Coordinate coord = new Coordinate(lat, lon);
+					
+					mapData.addPoint(new MapPoint(coord.getLat(), coord.getLon()));
+					
+					MapMarkerDot toAdd = new MapMarkerDot(coord);
+					map.addMapMarker(toAdd);
+				}
+			}
+		});
+		
 		
 		
 		//Clusters Menu
 	}
 	
+	protected void exportMapFile() {
+		try {
+			mapData.saveToFile(file);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(mapPanel, "No se pudo guardar el archivo", "Error", JOptionPane.ERROR_MESSAGE);
+			
+		}
+		
+	}
+
 	private void loadMapPoints() {
 		
 		ArrayList<MapPoint> points = mapData.getPoints();
@@ -211,14 +257,19 @@ public class MainForm {
 		
 		if(file != null){
 			try {
+				newMap();
 				mapData.loadFromFile(file);
 				
 			} catch (IOException | ParseException e) {
-				e.printStackTrace();
 				JOptionPane.showMessageDialog(mapPanel, "No se pudo cargar el archivo", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		
 		
+	}
+
+	private void newMap() {
+		mapData = new MapData();
+		map.removeAllMapMarkers();
 	}
 }

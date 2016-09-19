@@ -2,6 +2,7 @@ package proc;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -52,6 +53,29 @@ public class MapData{
 		
 	}
 	
+	public void saveToFile(File file) throws IOException{
+		
+		JSONObject obj = new JSONObject();
+
+		JSONArray list = new JSONArray();
+		
+		for(MapPoint point : points){
+			JSONObject coord = new JSONObject();
+			coord.put("latitud", point.getLat());
+			coord.put("longitud", point.getLon());
+			list.add(coord);
+		}
+
+		obj.put("mapData", list);
+
+		FileWriter finalFile = new FileWriter(file);
+		finalFile.write(obj.toJSONString());
+		finalFile.flush();
+		finalFile.close();
+
+		
+	}
+	
 	public void addPoint(MapPoint point){
 		
 		if(point != null){
@@ -76,5 +100,6 @@ public class MapData{
 		return ret;
 		
 	}
+		
 
 }
