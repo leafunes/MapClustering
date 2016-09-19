@@ -138,6 +138,9 @@ public class MainForm {
 				
 				while((line = buff.readLine()) != null) System.out.println(line);
 				
+				buff.close();
+				reader.close();
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
