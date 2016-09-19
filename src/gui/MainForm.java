@@ -31,6 +31,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainForm {
 
@@ -39,6 +41,8 @@ public class MainForm {
 	private JTabbedPane tabbedPane;
 	private JPanel mapPanel;
 	private JMapViewer map;
+	
+	private boolean addMarkerFromMap;
 	
 	private MapData mapData;
 	
@@ -113,6 +117,15 @@ public class MainForm {
 		JMenu mapOpciones = new JMenu("Opciones");
 		mapMenu.add(mapOpciones);
 		
+		JMenu mapAgregarMarcador = new JMenu("Agregar marcador");
+		mapOpciones.add(mapAgregarMarcador);
+		
+		JMenuItem mapCoordenadas = new JMenuItem("Con coordenadas");
+		mapAgregarMarcador.add(mapCoordenadas);
+		
+		JMenuItem mapDesdeMapa = new JMenuItem("Desde el mapa");
+		mapAgregarMarcador.add(mapDesdeMapa);
+		
 		JMenuItem mapImportar = new JMenuItem("Importar");
 		mapArchivo.add(mapImportar);
 		
@@ -122,12 +135,21 @@ public class MainForm {
 		mapImportar.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent e) {;
+			public void actionPerformed(ActionEvent e) {
 				fileChooser.showOpenDialog(null);
 				file = fileChooser.getSelectedFile();
 				importMapFile();
 				loadMapPoints();
 				fileChooser.setSelectedFile(null);
+				
+			}
+		});
+		
+		mapDesdeMapa.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addMarkerFromMap = true;
 				
 			}
 		});
@@ -143,6 +165,9 @@ public class MainForm {
 		
 		for(MapPoint point : points){
 			
+			//TODO
+			map.setDisplayPositionByLatLon(point.getLat(), point.getLon(), 10);
+			
 			Coordinate coord = new Coordinate(point.getLat(), point.getLon());
 			
 			MapMarkerDot marker = new MapMarkerDot(coord);
@@ -156,6 +181,26 @@ public class MainForm {
 	public void mapInit(){
 		
 		map = new JMapViewer();
+		map.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				if(addMarkerFromMap){
+					
+					Coordinate coord = map.getPosition(e.getX(),e.getY());
+					
+					mapData.addPoint(new MapPoint(coord.getLat(), coord.getLon()));
+					
+					MapMarkerDot toAdd = new MapMarkerDot(coord);
+					map.addMapMarker(toAdd);
+					
+					addMarkerFromMap = false;
+					
+					
+				}
+				
+			}
+		});
 		map.setBounds(new Rectangle(0, 21, 793, 527));
 		mapPanel.add(map);
 		
@@ -176,5 +221,4 @@ public class MainForm {
 		
 		
 	}
-	
 }
