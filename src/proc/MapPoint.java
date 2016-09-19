@@ -1,5 +1,6 @@
 package proc;
 
+
 public class MapPoint {
 	
 	private double lat;
@@ -31,6 +32,20 @@ public class MapPoint {
 	public MapPoint clone(){
 		MapPoint ret = new MapPoint(lat,lon);
 		return ret;
+	}
+
+	public double distanceTo(MapPoint other) {
+		
+		double dLat = Math.toRadians(this.getLat() - other.getLat());  
+	    double dLng = Math.toRadians(this.getLon() - other.getLon());  
+	    double sindLat = Math.sin(dLat / 2);  
+	    double sindLng = Math.sin(dLng / 2);  
+	    double va1 = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)  
+	            * Math.cos(Math.toRadians(this.getLat())) * Math.cos(Math.toRadians(other.getLat()));  
+	    double va2 = 2 * Math.atan2(Math.sqrt(va1), Math.sqrt(1 - va1));  
+	    double dist = EARTH_RAD * va2;  
+	
+	    return dist;
 	}
 
 }

@@ -89,6 +89,36 @@ public class MapData{
 		
 	}
 	
+	public void removePoint(MapPoint point){
+		
+		this.points.remove(point);
+		
+	}
+	
+	public void removeClosestTo(MapPoint other){
+		
+		removePoint(this.closestTo(other));
+		
+	}
+	
+	public MapPoint closestTo(MapPoint other){
+		if(points.size() > 0){
+			MapPoint ret = points.get(0);
+			double dist = Double.MAX_VALUE;
+			for (MapPoint mapPoint : points) {
+				if(mapPoint.distanceTo(other) < dist){
+					ret = mapPoint;
+					dist = mapPoint.distanceTo(other);
+				}
+			}
+			
+			
+			return dist < 19E-3? ret : null;
+		}
+		return null;
+		
+	}
+	
 	public ArrayList<MapPoint> getPoints(){
 		
 		if (points == null) return null;

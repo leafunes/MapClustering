@@ -11,6 +11,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.json.simple.parser.ParseException;
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
+import org.openstreetmap.gui.jmapviewer.JMapViewerTree;
 import org.openstreetmap.gui.jmapviewer.MapMarkerCircle;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
@@ -43,6 +44,7 @@ public class MainForm {
 	private JMapViewer map;
 	
 	private boolean addMarkerFromMap;
+	private boolean removeMarker;
 	
 	private MapData mapData;
 	
@@ -127,6 +129,18 @@ public class MainForm {
 		JMenuItem mapDesdeMapa = new JMenuItem("Desde el mapa");
 		mapAgregarMarcador.add(mapDesdeMapa);
 		
+		JMenu mnRemoverMarcador = new JMenu("Remover marcador");
+		mapOpciones.add(mnRemoverMarcador);
+		
+		JMenuItem mntmConCoordenadas = new JMenuItem("Con coordenadas");
+		mnRemoverMarcador.add(mntmConCoordenadas);
+		
+		JMenuItem mntmDesdeElMapa = new JMenuItem("Desde el mapa");
+		mnRemoverMarcador.add(mntmDesdeElMapa);
+		
+		JMenuItem mntmNuevoMapa = new JMenuItem("Nuevo mapa");
+		mapArchivo.add(mntmNuevoMapa);
+		
 		JMenuItem mapImportar = new JMenuItem("Importar");
 		mapArchivo.add(mapImportar);
 		
@@ -190,6 +204,14 @@ public class MainForm {
 			}
 		});
 		
+		mntmDesdeElMapa.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				removeMarker = true;
+			}
+		});
+		
 		
 		
 		//Clusters Menu
@@ -212,7 +234,7 @@ public class MainForm {
 		for(MapPoint point : points){
 			
 			//TODO
-			map.setDisplayPositionByLatLon(point.getLat(), point.getLon(), 10);
+			//map.setDisplayPositionByLatLon(point.getLat(), point.getLon(), 10);
 			
 			Coordinate coord = new Coordinate(point.getLat(), point.getLon());
 			
@@ -230,10 +252,11 @@ public class MainForm {
 		map.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+
+				Coordinate coord = map.getPosition(e.getX(),e.getY());
 				
 				if(addMarkerFromMap){
 					
-					Coordinate coord = map.getPosition(e.getX(),e.getY());
 					
 					mapData.addPoint(new MapPoint(coord.getLat(), coord.getLon()));
 					
@@ -245,6 +268,17 @@ public class MainForm {
 					
 				}
 				
+				if(removeMarker){
+					
+					MapPoint toDelete = new MapPoint(coord.getLat(), coord.getLon());
+					
+					mapData.removeClosestTo(toDelete);
+					
+					map.removeAllMapMarkers();
+					loadMapPoints();
+					removeMarker = false;
+				
+				}
 			}
 		});
 		map.setBounds(new Rectangle(0, 21, 793, 527));
