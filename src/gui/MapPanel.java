@@ -214,8 +214,13 @@ public class MapPanel extends JPanel{
 				newMap();
 				mapData.loadFromFile(file);
 				
-			} catch (IOException | ParseException e) {
+			} 
+			catch (IOException e) {
 				JOptionPane.showMessageDialog(this, "No se pudo cargar el archivo", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		
+			catch (ClassCastException | ParseException e){
+				JOptionPane.showMessageDialog(this, "El archivo no tiene el formato requerido", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		

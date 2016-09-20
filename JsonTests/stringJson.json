@@ -1,0 +1,12 @@
+{
+	"mapData":[
+	  {
+	    "latitud": "aString",
+	    "longitud": "anotherString"
+	  },
+	  {
+	    "latitud": -34.520772089706036,
+	    "longitud": -58.702311515808105
+	  }
+	]
+}

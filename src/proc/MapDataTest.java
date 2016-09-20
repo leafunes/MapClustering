@@ -10,10 +10,8 @@ import org.json.simple.parser.ParseException;
 import org.junit.Test;
 
 public class MapDataTest {
-
-	@Test
-	public void addPointTest() {
-		
+	
+	private MapData mapaCon2(){
 		MapData map = new MapData();
 		
 		MapPoint point1 = new MapPoint(123.123, -456.458);
@@ -24,11 +22,19 @@ public class MapDataTest {
 		map.addPoint(point2);
 		map.addPoint(point3);
 		
+		return map;
+	}
+
+	@Test
+	public void addPointTest() {
+		
+		MapData map = mapaCon2();
+		
 		ArrayList<MapPoint> points = map.getPoints();
 		
 		assertEquals(2,points.size());
-		assertEquals(point1.getLon(), points.get(0).getLon(), 10E-9);
-		assertEquals(point1.getLat(), points.get(0).getLat(), 10E-9);
+		assertEquals(123.123, points.get(0).getLat(), 10E-9);
+		assertEquals(-456.458, points.get(0).getLon(), 10E-9);
 		
 	}
 	
@@ -37,15 +43,11 @@ public class MapDataTest {
 		
 		MapData map = new MapData();
 		
-		File file = new File("mapTest.json");
+		File file = new File("JsonTests"+File.separatorChar+"mapTest.json");
 		
 		try {
 			map.loadFromFile(file);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
 		
@@ -58,25 +60,50 @@ public class MapDataTest {
 		
 	}
 	
-	@Test
-	public void saveToFileTest() {
+	@Test (expected = ParseException.class)
+	public void loadFromNotJSONTest() throws ParseException, IOException{
 		
 		MapData map = new MapData();
 		
-		MapPoint point1 = new MapPoint(123.123, -456.458);
-		MapPoint point2 = new MapPoint(0.654, -10.19);
-		MapPoint point3 = null;
+		File notJson = new File("JsonTests"+File.separatorChar+"notAJson.txt");
 		
-		map.addPoint(point1);
-		map.addPoint(point2);
-		map.addPoint(point3);
+		map.loadFromFile(notJson);
 		
-		File file = new File("mapTestOut.json");
+	}
+	
+	@Test (expected = IOException.class)
+	public void loadFromOtherJSONTest() throws ParseException, IOException{
+		
+		MapData map = new MapData();
+		
+		File notJson = new File("JsonTests"+File.separatorChar+"otherJson.txt");
+		
+		map.loadFromFile(notJson);
+		
+	}
+	
+	@Test (expected = ClassCastException.class)
+	public void loadFromNotFormattedJsonTest() throws ParseException, IOException{
+		
+		MapData map = new MapData();
+		
+		File notJson = new File("JsonTests"+File.separatorChar+"stringJson.json");
+		
+		map.loadFromFile(notJson);
+		
+	}
+	
+	@Test
+	public void saveToFileTest() {
+		
+		MapData map = mapaCon2();
+		
+		File file = new File("JsonTests"+File.separatorChar+"mapTestOut.json");
 		
 		try {
 			map.saveToFile(file);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		
@@ -84,11 +111,8 @@ public class MapDataTest {
 		
 		try {
 			mapnew.loadFromFile(file);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException | ParseException e) {
+			
 			e.printStackTrace();
 		}
 		
@@ -96,9 +120,48 @@ public class MapDataTest {
 		
 		assertEquals(2, points.size());
 
-		assertEquals(point1.getLat(), points.get(0).getLat(), 10E-5);
-		assertEquals(point1.getLon(), points.get(0).getLon(), 10E-5);
+		assertEquals(123.123, points.get(0).getLat(), 10E-5);
+		assertEquals(-456.458, points.get(0).getLon(), 10E-5);
 		
+	}
+	
+	@Test
+	public void removePointTest(){
+		MapData map = mapaCon2();
+		
+		assertEquals(2, map.getPoints().size());
+		
+		MapPoint existingPoint = map.getPoints().get(0);
+		
+		map.removePoint(existingPoint);
+		
+		assertEquals(1, map.getPoints().size());
+		
+		MapPoint notExisting = new MapPoint(1234, 789);
+		
+		map.removePoint(notExisting);
+		
+		assertEquals(1, map.getPoints().size());
+		
+		map.removePoint(null);
+		
+		assertEquals(1, map.getPoints().size());
+		
+	}
+	
+	@Test 
+	public void removeClosetTo(){
+		MapData map = mapaCon2();
+		
+		MapPoint mapP = map.getPoints().get(0);
+		
+		MapPoint point1 = new MapPoint(123.125, -456.458);
+		
+		MapPoint closest = map.closestTo(point1);
+		
+		assertEquals(mapP, closest);
+		
+		MapPoint closest2 = map.closestTo(null);
 	}
 
 }

@@ -37,8 +37,11 @@ public class MapData{
 		JSONParser parser = new JSONParser();
 
 		JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(file));
-
+		
 		JSONArray coords = (JSONArray) jsonObject.get("mapData");
+		
+		if (coords == null) throw new IOException("El archivo " + file.getAbsolutePath() + " no tiene el formato esperado");
+		
 		for (Object object : coords) {
 			
 			JSONObject coord = (JSONObject)object;
@@ -97,11 +100,16 @@ public class MapData{
 	
 	public void removeClosestTo(MapPoint other){
 		
-		removePoint(this.closestTo(other));
+		MapPoint toRemove = this.closestTo(other);
+		if (other.distanceTo(toRemove) < 10E-3)
+			removePoint(toRemove);
 		
 	}
 	
 	public MapPoint closestTo(MapPoint other){
+		
+		if(other == null) return null;
+		
 		if(points.size() > 0){
 			MapPoint ret = points.get(0);
 			double dist = Double.MAX_VALUE;
@@ -113,7 +121,7 @@ public class MapData{
 			}
 			
 			
-			return dist < 19E-3? ret : null;
+			return ret;
 		}
 		return null;
 		

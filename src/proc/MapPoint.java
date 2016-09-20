@@ -13,14 +13,6 @@ public class MapPoint {
 		this.lon = lon;
 	}
 	
-	public double getDistTo(MapPoint other){
-		
-		//TODO
-		return 0;
-		
-		
-	}
-	
 	public double getLat(){
 		return lat;
 	}
@@ -46,6 +38,20 @@ public class MapPoint {
 	    double dist = EARTH_RAD * va2;  
 	
 	    return dist;
+	}
+	
+	@Override
+	public boolean equals(Object other){
+	    if (other == null) return false;
+	    
+	    if (other == this) return true;
+	    
+	    if (!(other instanceof MapPoint))return false;
+	    
+	    MapPoint otherMapPoint = (MapPoint)other;
+	    
+	    if(this.getLat() == otherMapPoint.getLat() && this.getLon() == otherMapPoint.getLon())return true;
+	    else return false;
 	}
 
 }
