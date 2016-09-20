@@ -1,5 +1,6 @@
 package proc;
 
+import org.openstreetmap.gui.jmapviewer.Coordinate;
 
 public class MapPoint {
 	
@@ -27,7 +28,8 @@ public class MapPoint {
 	}
 
 	public double distanceTo(MapPoint other) {
-		
+		if(other == null)return 0;
+			
 		double dLat = Math.toRadians(this.getLat() - other.getLat());  
 	    double dLng = Math.toRadians(this.getLon() - other.getLon());  
 	    double sindLat = Math.sin(dLat / 2);  
@@ -52,6 +54,10 @@ public class MapPoint {
 	    
 	    if(this.getLat() == otherMapPoint.getLat() && this.getLon() == otherMapPoint.getLon())return true;
 	    else return false;
+	}
+
+	public Coordinate toCoordinate() {
+		return new Coordinate(lat, lon);
 	}
 
 }
