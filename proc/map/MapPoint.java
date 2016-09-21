@@ -57,6 +57,11 @@ public class MapPoint implements Graphable<MapPoint>{
 	    if(this.getLat() == otherMapPoint.getLat() && this.getLon() == otherMapPoint.getLon())return true;
 	    else return false;
 	}
+	
+	@Override
+	public String toString(){
+		return "(" + "Lat: " + this.lat + ", Lon: " + this.lon + ")";
+	}
 
 	public Coordinate toCoordinate() {
 		return new Coordinate(lat, lon);
