@@ -25,8 +25,9 @@ import org.openstreetmap.gui.jmapviewer.Coordinate;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 
-import proc.MapData;
-import proc.MapPoint;
+import map.MapData;
+import map.MapPoint;
+
 import javax.swing.JToolBar;
 import javax.swing.JToggleButton;
 

@@ -1,8 +1,10 @@
-package proc;
+package map;
 
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 
-public class MapPoint {
+import graph.Graphable;
+
+public class MapPoint implements Graphable<MapPoint>{
 	
 	private double lat;
 	private double lon;

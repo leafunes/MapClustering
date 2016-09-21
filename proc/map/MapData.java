@@ -1,4 +1,4 @@
-package proc;
+package map;
 
 import java.io.File;
 import java.io.FileReader;
@@ -16,7 +16,7 @@ import org.json.simple.parser.ParseException;
 public class MapData{
 	
 	private ArrayList<MapPoint> points;
-	private GrafoPesado grafo;
+	//private GrafoPesado grafo;
 	
 	public MapData(){
 		points = new ArrayList<>();

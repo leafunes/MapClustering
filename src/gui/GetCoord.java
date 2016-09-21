@@ -11,7 +11,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.eclipse.ui.internal.handlers.ActionCommandMappingService;
 
-import proc.MapPoint;
+import map.MapPoint;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;

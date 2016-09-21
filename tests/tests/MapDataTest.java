@@ -1,4 +1,4 @@
-package proc;
+package tests;
 
 import static org.junit.Assert.*;
 
@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
+
+import map.MapData;
+import map.MapPoint;
 
 public class MapDataTest {
 	
@@ -43,7 +46,7 @@ public class MapDataTest {
 		
 		MapData map = new MapData();
 		
-		File file = new File("JsonTests"+File.separatorChar+"mapTest.json");
+		File file = new File("tests" + File.separatorChar + "JsonTests"+File.separatorChar+"mapTest.json");
 		
 		try {
 			map.loadFromFile(file);
@@ -65,7 +68,7 @@ public class MapDataTest {
 		
 		MapData map = new MapData();
 		
-		File notJson = new File("JsonTests"+File.separatorChar+"notAJson.txt");
+		File notJson = new File("tests" + File.separatorChar + "JsonTests"+File.separatorChar+"notAJson.txt");
 		
 		map.loadFromFile(notJson);
 		
@@ -76,7 +79,7 @@ public class MapDataTest {
 		
 		MapData map = new MapData();
 		
-		File notJson = new File("JsonTests"+File.separatorChar+"otherJson.txt");
+		File notJson = new File("tests" + File.separatorChar + "JsonTests"+File.separatorChar+"otherJson.txt");
 		
 		map.loadFromFile(notJson);
 		
@@ -87,7 +90,7 @@ public class MapDataTest {
 		
 		MapData map = new MapData();
 		
-		File notJson = new File("JsonTests"+File.separatorChar+"stringJson.json");
+		File notJson = new File("tests" + File.separatorChar + "JsonTests"+File.separatorChar+"stringJson.json");
 		
 		map.loadFromFile(notJson);
 		
@@ -98,7 +101,7 @@ public class MapDataTest {
 		
 		MapData map = mapaCon2();
 		
-		File file = new File("JsonTests"+File.separatorChar+"mapTestOut.json");
+		File file = new File("tests" + File.separatorChar + "JsonTests"+File.separatorChar+"mapTestOut.json");
 		
 		try {
 			map.saveToFile(file);
