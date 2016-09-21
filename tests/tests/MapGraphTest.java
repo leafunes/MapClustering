@@ -17,10 +17,10 @@ public class MapGraphTest {
 	private void fill4Refs(MapGraph<MapPoint> graph){
 	
 		
-		graph.addEdge(p1);
-		graph.addEdge(p2);
-		graph.addEdge(p3);
-		graph.addEdge(p4);
+		graph.addVertex(p1);
+		graph.addVertex(p2);
+		graph.addVertex(p3);
+		graph.addVertex(p4);
 	}
 
 	@Test
@@ -29,13 +29,13 @@ public class MapGraphTest {
 		MapGraph<MapPoint> graph = new MapGraph<>(4);
 		fill4Refs(graph);
 		
-		assertEquals(0, graph.getVertices());
+		assertEquals(0, graph.getEdges());
 		
-		graph.addVertex(p1, p2);
+		graph.addEdge(p1, p2);
 		
-		graph.addVertex(p2, p1);
+		graph.addEdge(p2, p1);
 		
-		assertEquals(1, graph.getVertices());
+		assertEquals(1, graph.getEdges());
 		
 		Double dist = p1.distanceTo(p2);
 		
@@ -50,11 +50,11 @@ public class MapGraphTest {
 		MapGraph<MapPoint> graph = new MapGraph<>(4);
 		fill4Refs(graph);
 		
-		assertEquals(0, graph.getVertices());
+		assertEquals(0, graph.getEdges());
 		
-		graph.addVertex(null, p2);
+		graph.addEdge(null, p2);
 		
-		assertEquals(0, graph.getVertices());
+		assertEquals(0, graph.getEdges());
 		
 	}
 	
@@ -63,13 +63,13 @@ public class MapGraphTest {
 		MapGraph<MapPoint> graph = new MapGraph<>(4);
 		fill4Refs(graph);
 		
-		assertEquals(0, graph.getVertices());
+		assertEquals(0, graph.getEdges());
 		
 		MapPoint notExistent = new MapPoint(0, 0);
 		
-		graph.addVertex(p1, notExistent);
+		graph.addEdge(p1, notExistent);
 		
-		assertEquals(0, graph.getVertices());
+		assertEquals(0, graph.getEdges());
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -77,11 +77,11 @@ public class MapGraphTest {
 		MapGraph<MapPoint> graph = new MapGraph<>(4);
 		fill4Refs(graph);
 		
-		assertEquals(0, graph.getVertices());
+		assertEquals(0, graph.getEdges());
 		
-		graph.addVertex(p1, p1);
+		graph.addEdge(p1, p1);
 		
-		assertEquals(0, graph.getVertices());
+		assertEquals(0, graph.getEdges());
 	}
 	
 	@Test
@@ -89,19 +89,19 @@ public class MapGraphTest {
 		MapGraph<MapPoint> graph = new MapGraph<>(4);
 		fill4Refs(graph);
 		
-		graph.addVertex(p1, p2);
-		graph.addVertex(p1, p3);
-		graph.addVertex(p2, p4);
+		graph.addEdge(p1, p2);
+		graph.addEdge(p1, p3);
+		graph.addEdge(p2, p4);
 		
-		assertEquals(3, graph.getVertices());
+		assertEquals(3, graph.getEdges());
 		
-		graph.removeVertex(p1, p2);
+		graph.removeEdge(p1, p2);
 		
-		assertEquals(2, graph.getVertices());
+		assertEquals(2, graph.getEdges());
 		
-		graph.removeVertex(p1, p2);
+		graph.removeEdge(p1, p2);
 		
-		assertEquals(2, graph.getVertices());
+		assertEquals(2, graph.getEdges());
 		
 	}
 	
@@ -110,18 +110,18 @@ public class MapGraphTest {
 		MapGraph<MapPoint> graph = new MapGraph<>(4);
 		fill4Refs(graph);
 		
-		graph.addVertex(p1, p2);
-		graph.addVertex(p1, p3);
-		graph.addVertex(p2, p4);
+		graph.addEdge(p1, p2);
+		graph.addEdge(p1, p3);
+		graph.addEdge(p2, p4);
 		
-		assertFalse(graph.containsVertex(p1, p4));
+		assertFalse(graph.containsEdge(p1, p4));
 		
-		assertTrue(graph.containsVertex(p1, p2));
+		assertTrue(graph.containsEdge(p1, p2));
 		
 		
-		graph.removeVertex(p1, p2);
+		graph.removeEdge(p1, p2);
 		
-		assertFalse(graph.containsVertex(p1, p2));
+		assertFalse(graph.containsEdge(p1, p2));
 		
 	}
 
