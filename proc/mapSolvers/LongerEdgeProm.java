@@ -51,7 +51,7 @@ public class LongerEdgeProm <E extends Graphable<E>> extends MapSolver<E>{
 
 	public void removeVertices(MapGraph<E> graphAGM) {
 		for(int i = 0; i < cantClusters - 1; i++){
-			MapEdge<E> e = graphAGM.getLongerEdge();
+			MapEdge<E> e = getLongerEdgeProm(graphAGM);
 			graphAGM.removeEdge(e);
 		}
 		
@@ -60,6 +60,17 @@ public class LongerEdgeProm <E extends Graphable<E>> extends MapSolver<E>{
 	private MapEdge<E> getLongerEdgeProm(MapGraph<E> graphAGM){
 		
 		//TODO
+		
+		/***
+		 * 
+		 * Por cada edge
+		 * obtener cada vecino
+		 * obtener el promedio de los vecinos
+		 * ¿Que tean largo es el edge respecto a los vecinos?
+		 * devolver el edge mas largo respecto a los vecinos
+		 * 
+		 * 
+		 */
 		return null;
 		
 	}
