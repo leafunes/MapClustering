@@ -28,7 +28,8 @@ public class MapPoint implements Graphable<MapPoint>{
 		MapPoint ret = new MapPoint(lat,lon);
 		return ret;
 	}
-
+	
+	@Override
 	public double distanceTo(MapPoint other) {
 		if(other == null)return 0;
 			

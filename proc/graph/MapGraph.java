@@ -4,16 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
-import com.google.common.collect.TreeBasedTable;
-
 
 public class MapGraph <V extends Graphable<V>>{
 
@@ -98,6 +90,7 @@ public class MapGraph <V extends Graphable<V>>{
 	}
 	
 	public Double getWeigth(V e1, V e2){
+		
 		if(containsEdge(e1, e2)){
 			
 			return e1.distanceTo(e2);
