@@ -67,4 +67,20 @@ public class MapPoint implements Graphable<MapPoint>{
 		return new Coordinate(lat, lon);
 	}
 
+	@Override
+	public int compareTo(MapPoint other) {
+		if (other == null) return 1;
+	    
+	    if (other == this) return 0;
+	    
+	    //TODO closest to north pole?
+	    
+	    MapPoint northPole = new MapPoint(90, 0);
+	    if(this.distanceTo(northPole) < other.distanceTo(northPole))return 1;
+	    if(this.distanceTo(northPole) > other.distanceTo(northPole))return -1;
+	    
+	    return 0;
+	}
+
+
 }

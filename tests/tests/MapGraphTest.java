@@ -2,8 +2,13 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.junit.Test;
 
+import graph.MapEdge;
 import graph.MapGraph;
 import map.MapPoint;
 
@@ -14,20 +19,22 @@ public class MapGraphTest {
 	MapPoint p3 = new MapPoint(204, 456);
 	MapPoint p4 = new MapPoint(205, 456);
 	
-	private void fill4Refs(MapGraph<MapPoint> graph){
-	
+
+	private MapGraph<MapPoint> generateMap() {
+		ArrayList<MapPoint> array = new ArrayList<>();
+		array.add(p1);
+		array.add(p2);
+		array.add(p3);
+		array.add(p4);
 		
-		graph.addVertex(p1);
-		graph.addVertex(p2);
-		graph.addVertex(p3);
-		graph.addVertex(p4);
+		MapGraph<MapPoint> graph = new MapGraph<>(array);
+		return graph;
 	}
 
 	@Test
-	public void addVertexTest() {
+	public void addEdgeTest() {
 		
-		MapGraph<MapPoint> graph = new MapGraph<>(4);
-		fill4Refs(graph);
+		MapGraph<MapPoint> graph = generateMap();
 		
 		assertEquals(0, graph.getEdges());
 		
@@ -42,13 +49,18 @@ public class MapGraphTest {
 		assertEquals(dist, graph.getWeigth(p1, p2));
 		assertEquals(dist, graph.getWeigth(p2, p1));
 		
+		MapEdge<MapPoint> edge = new MapEdge<MapPoint>(p2, p4);
+		
+		graph.addEdge(edge);
+		
+		assertEquals(2, graph.getEdges());
+		
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void addNullVertexTest() {
+	public void addNullEdgeTest() {
 		
-		MapGraph<MapPoint> graph = new MapGraph<>(4);
-		fill4Refs(graph);
+		MapGraph<MapPoint> graph = generateMap();
 		
 		assertEquals(0, graph.getEdges());
 		
@@ -59,9 +71,9 @@ public class MapGraphTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void addNotExistentVertexTest(){
-		MapGraph<MapPoint> graph = new MapGraph<>(4);
-		fill4Refs(graph);
+	public void addNotExistentEdgeTest(){
+		
+		MapGraph<MapPoint> graph = generateMap();
 		
 		assertEquals(0, graph.getEdges());
 		
@@ -73,9 +85,9 @@ public class MapGraphTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void addLoopVertexTest(){
-		MapGraph<MapPoint> graph = new MapGraph<>(4);
-		fill4Refs(graph);
+	public void addLoopVEdgeTest(){
+
+		MapGraph<MapPoint> graph = generateMap();
 		
 		assertEquals(0, graph.getEdges());
 		
@@ -85,9 +97,9 @@ public class MapGraphTest {
 	}
 	
 	@Test
-	public void removeVertexTest(){
-		MapGraph<MapPoint> graph = new MapGraph<>(4);
-		fill4Refs(graph);
+	public void removeEdgeTest(){
+
+		MapGraph<MapPoint> graph = generateMap();
 		
 		graph.addEdge(p1, p2);
 		graph.addEdge(p1, p3);
@@ -106,9 +118,9 @@ public class MapGraphTest {
 	}
 	
 	@Test
-	public void containsVertexTest(){
-		MapGraph<MapPoint> graph = new MapGraph<>(4);
-		fill4Refs(graph);
+	public void containsEdgeTest(){
+
+		MapGraph<MapPoint> graph = generateMap();
 		
 		graph.addEdge(p1, p2);
 		graph.addEdge(p1, p3);
@@ -118,10 +130,72 @@ public class MapGraphTest {
 		
 		assertTrue(graph.containsEdge(p1, p2));
 		
-		
 		graph.removeEdge(p1, p2);
 		
 		assertFalse(graph.containsEdge(p1, p2));
+		
+	}
+	
+	@Test
+	public void getVertexTest(){
+		MapGraph<MapPoint> graph = generateMap();
+		
+		MapPoint vertex = graph.getVertex(0);
+		
+		assertEquals(vertex, p1);
+	}
+	
+	@Test
+	public void getNehiOfTest(){
+		MapGraph<MapPoint> graph = generateMap();
+		
+		graph.addEdge(p1, p2);
+		graph.addEdge(p1, p3);
+		graph.addEdge(p1, p4);
+		graph.addEdge(p3, p4);
+		
+		Set<MapPoint> nehi = graph.getNehiVertex(p4);
+		
+		Set<MapPoint> expected = new TreeSet<>();
+		expected.add(p1);
+		expected.add(p3);
+		
+		assertTrue(nehi.containsAll(expected));
+		
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void getNehiOfNotExistentTest(){
+		MapGraph<MapPoint> graph = generateMap();
+		
+		graph.addEdge(p1, p2);
+		graph.addEdge(p1, p3);
+		graph.addEdge(p1, p4);
+		graph.addEdge(p3, p4);
+		
+		Set<MapPoint> nehi = graph.getNehiVertex(null);
+		
+		Set<MapPoint> expected = new TreeSet<>();
+		expected.add(p1);
+		expected.add(p3);
+		
+		assertTrue(nehi.containsAll(expected));
+		
+	}
+	
+	@Test
+	public void getLongerEdgeTest(){
+		
+		MapGraph<MapPoint> graph = generateMap();
+		
+		graph.addEdge(p1, p2);
+		graph.addEdge(p1, p3);
+		graph.addEdge(p1, p4);
+		graph.addEdge(p3, p4);
+		
+		MapEdge<MapPoint> edge = graph.getLongerEdge();
+		
+		assertEquals(9117.983984853816, edge.weight, 10E-9);
 		
 	}
 

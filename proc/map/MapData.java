@@ -5,15 +5,19 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import graph.Graphable;
 
 
-public class MapData{
+
+public class MapData implements Iterable<MapPoint>{
 	
 	private ArrayList<MapPoint> points;
 	//private GrafoPesado grafo;
@@ -127,7 +131,7 @@ public class MapData{
 		
 	}
 	
-	public ArrayList<MapPoint> getPoints(){
+	public List<MapPoint> getPoints(){
 		
 		if (points == null) return null;
 		
@@ -137,6 +141,11 @@ public class MapData{
 		
 		return ret;
 		
+	}
+
+	@Override
+	public Iterator<MapPoint> iterator() {
+		return this.points.iterator();
 	}
 		
 

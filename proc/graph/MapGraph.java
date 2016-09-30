@@ -1,47 +1,48 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
-import map.MapPoint;
-
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
+import com.google.common.collect.TreeBasedTable;
 
 
 public class MapGraph <V extends Graphable<V>>{
 
+	HashMap<V, TreeSet<V> > table;
+	private ArrayList<V> refList;
 	
-	ArrayList<V> refs;
-	Double [][] matrix;
 	int edges;
+	int vertices;
 	
-	public MapGraph(int edges){
-		matrix = new Double [edges][edges];
-		refs = new ArrayList<>(edges);
+	public MapGraph(Collection<? extends V> vertices){
 		
-	}
-	
-	protected MapGraph(ArrayList<V> refs){
-		matrix = new Double [refs.size()][refs.size()];
-		this.refs = refs;
-	}
-	
-	public void addVertex(V vertex){
-		if (vertex == null)
-			throw new IllegalArgumentException("No se pueden agregar aristas nulas");
+		table = new HashMap<>();
+		refList = new ArrayList<V>();
+		refList.addAll(vertices);
+		
+		for (V v : vertices) {
 			
-		refs.add(vertex);
+			TreeSet<V> neighbors = new TreeSet<>();
+			table.put(v, neighbors);
+			
+		}
 		
+		this.vertices = vertices.size();
 	}
 	
 	public boolean containsEdge(V vertex1, V vertex2){
 		
 		checkBounds(vertex1, vertex2);
 		
-		int i = refs.indexOf(vertex1);
-		int j = refs.indexOf(vertex2);
-		
-		return matrix[i][j] != null;
+		return table.get(vertex1).contains(vertex2) &&
+				table.get(vertex2).contains(vertex1);
 	}
 
 	public void addEdge(V edge1, V edge2) throws IllegalArgumentException{
@@ -49,25 +50,20 @@ public class MapGraph <V extends Graphable<V>>{
 		if(!containsEdge(edge1, edge2))
 			edges++;
 		
-		int i = refs.indexOf(edge1);
-		int j = refs.indexOf(edge2);
 		
-		matrix[i][j] = matrix[j][i] = edge1.distanceTo(edge2);
-		
-		
+		table.get(edge1).add(edge2);
+		table.get(edge2).add(edge1);
 	}
 	
 	public void addEdge(MapEdge<V> e) throws IllegalArgumentException{
-		
+		if(e == null) throw new IllegalArgumentException("El edge es nulo");
 		addEdge(e.vertex1, e.vertex2);
-		
-		
 	}
 	
 	public void removeEdge(MapEdge<V> e){
-		
+
+		if(e == null) throw new IllegalArgumentException("El edge es nulo");
 		removeEdge(e.vertex1, e.vertex2);
-		
 		
 	}
 	
@@ -76,10 +72,9 @@ public class MapGraph <V extends Graphable<V>>{
 		if(containsEdge(edge1, edge2))
 			edges--;
 		
-		int i = refs.indexOf(edge1);
-		int j = refs.indexOf(edge2);
 		
-		matrix[i][j] = matrix[j][i] = null;
+		table.get(edge1).remove(edge2);
+		table.get(edge2).remove(edge1);
 		
 		
 	}
@@ -87,13 +82,65 @@ public class MapGraph <V extends Graphable<V>>{
 	public Double getWeigth(V e1, V e2){
 		if(containsEdge(e1, e2)){
 			
-			int i = refs.indexOf(e1);
-			int j = refs.indexOf(e2);
-			
-			return matrix[i][j];
+			return e1.distanceTo(e2);
 		}
 		
 		return null;
+	}
+	
+	public Set<V> getNehiVertex(V i2) {
+		
+		if(i2 == null || !table.containsKey(i2))
+			throw new IllegalArgumentException("No existe la arista");
+		
+		return table.get(i2);
+		
+		
+	}
+	
+	public Set<V> getVerticesSet(){
+		return table.keySet();
+	}
+	
+	public V getVertex(int i) {
+		
+		if(i > refList.size() || i < 0)
+			throw new IllegalArgumentException("Arista no encontrado " + i);
+		
+		
+		return refList.get(i);
+	}
+	
+	private void checkBounds(V v1, V v2){
+		if (v1 == null || v2 == null)
+			throw new IllegalArgumentException("Vertice nulo");
+
+		if (!table.containsKey(v1) || !table.containsKey(v2))
+			throw new IllegalArgumentException("Vertices no existentes" + v1.toString() + ", " + v2.toString());
+
+		if (v1.equals(v2))
+			throw new IllegalArgumentException("No se pueden agregar loops: " + v1.toString());
+	}
+
+
+
+	public MapEdge<V> getLongerEdge() {
+		
+		if(edges == 0) return null;
+		
+		MapEdge<V> ret = new MapEdge<V>(null, null ,Double.MIN_VALUE);
+		
+		for (V edgeKey : table.keySet()) {
+			for(V edgeNehi : getNehiVertex(edgeKey)){
+				
+				if( ret.weight.compareTo( edgeKey.distanceTo(edgeNehi)) == -1){
+					ret = new MapEdge<V>(edgeKey, edgeNehi);
+				}
+				
+			}
+		}
+		
+		return ret;
 	}
 	
 	public int getEdges(){
@@ -101,65 +148,33 @@ public class MapGraph <V extends Graphable<V>>{
 	}
 	
 	public int getVertices(){
-		return refs.size();
+		return vertices;
 	}
-
 	
-	private void checkBounds(V v1, V v2){
-		if (v1 == null || v2 == null)
-			throw new IllegalArgumentException("Vertice nulo");
-
-		if (!refs.contains(v1) || !refs.contains(v2))
-			throw new IllegalArgumentException("Vertices no existentes" + v1.toString() + ", " + v2.toString());
-
-		if (v1.equals(v2))
-			throw new IllegalArgumentException("No se pueden agregar loops: " + v1.toString());
+	
+	@Override
+	public String toString(){
+		//TODO
+		return table.toString();
 	}
-
-	public V getVertex(int i) {
+	
+	@Override
+	public boolean equals(Object other){
 		
-		if(i < refs.size())
-			throw new IllegalArgumentException("Arista no encontrado " + i);
+		if(other == null)return false;
 		
+		if(other == this) return true;
 		
-		return refs.get(0);
-	}
-
-	public Set<V> getNehiVertex(V i2) {
-		
-		if(!refs.contains(i2))
-			throw new IllegalArgumentException("No existe la arista");
-		
-		int index = refs.indexOf(i2);
-		
-		Set<V> ret = new TreeSet<V>();
-		
-		for(int i = 0; i < refs.size(); i++){
+		if(other instanceof MapGraph<?>){
 			
-			if(matrix[index][i] != null) ret.add(refs.get(i));
+			MapGraph<?> otherMap = (MapGraph<?>) other;
 			
+			return this.table.equals(otherMap.table);
 		}
-		
-		return ret;
-		
+		return false;
 		
 	}
 
-	public MapEdge<V> getLongerEdge() {
-		
-		int longerI = 0;
-		int longerJ = 0;
-		
-		for (int i = 0; i < getVertices(); i++){
-			for (int j = 0; j < getVertices(); i++){
-				if (matrix[i][j].compareTo(matrix[longerI][longerJ]) > 0){
-					longerI = i;
-					longerJ = j;
-				}
-			}
-		}
-		return new MapEdge<V>(refs.get(longerI), refs.get(longerJ), matrix[longerI][longerJ]);
-	}
 	
 	
 	

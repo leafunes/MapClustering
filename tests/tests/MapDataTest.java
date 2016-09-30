@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class MapDataTest {
 		
 		MapData map = mapaCon2();
 		
-		ArrayList<MapPoint> points = map.getPoints();
+		List<MapPoint> points = map.getPoints();
 		
 		assertEquals(2,points.size());
 		assertEquals(123.123, points.get(0).getLat(), 10E-9);
@@ -54,7 +55,7 @@ public class MapDataTest {
 			e.printStackTrace();
 		}
 		
-		ArrayList<MapPoint> points = map.getPoints();
+		List<MapPoint> points = map.getPoints();
 		
 		assertEquals(2,points.size());
 
@@ -119,7 +120,7 @@ public class MapDataTest {
 			e.printStackTrace();
 		}
 		
-		ArrayList<MapPoint> points = mapnew.getPoints();
+		List<MapPoint> points = mapnew.getPoints();
 		
 		assertEquals(2, points.size());
 

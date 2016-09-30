@@ -4,31 +4,6 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import org.json.simple.parser.ParseException;
-import org.openstreetmap.gui.jmapviewer.Coordinate;
-import org.openstreetmap.gui.jmapviewer.JMapViewer;
-import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
-
-import map.MapData;
-import map.MapPoint;
-
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class MainForm {
 

@@ -1,7 +1,8 @@
 package graph;
 
-public interface Graphable <E>{
+public interface Graphable <T> extends Comparable<T> {
 	
-	public abstract double distanceTo(E other);
+	public abstract double distanceTo(T other);
 
 }
+
