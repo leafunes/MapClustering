@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -15,7 +17,7 @@ import com.google.common.collect.TreeBasedTable;
 
 public class MapGraph <V extends Graphable<V>>{
 
-	HashMap<V, TreeSet<V> > table;
+	HashMap<V, HashSet<V> > table;
 	private ArrayList<V> refList;
 	
 	int edges;
@@ -29,7 +31,7 @@ public class MapGraph <V extends Graphable<V>>{
 		
 		for (V v : vertices) {
 			
-			TreeSet<V> neighbors = new TreeSet<>();
+			HashSet<V> neighbors = new HashSet<>();
 			table.put(v, neighbors);
 			
 		}
@@ -49,8 +51,7 @@ public class MapGraph <V extends Graphable<V>>{
 		
 		if(!containsEdge(edge1, edge2))
 			edges++;
-		
-		
+	
 		table.get(edge1).add(edge2);
 		table.get(edge2).add(edge1);
 	}
@@ -60,6 +61,16 @@ public class MapGraph <V extends Graphable<V>>{
 		addEdge(e.vertex1, e.vertex2);
 	}
 	
+	public void removeEdge(V edge1, V edge2){
+		
+		if(containsEdge(edge1, edge2))
+			edges--;
+		
+		table.get(edge1).remove(edge2);
+		table.get(edge2).remove(edge1);
+			
+	}
+	
 	public void removeEdge(MapEdge<V> e){
 
 		if(e == null) throw new IllegalArgumentException("El edge es nulo");
@@ -67,16 +78,23 @@ public class MapGraph <V extends Graphable<V>>{
 		
 	}
 	
-	public void removeEdge(V edge1, V edge2){
+	public MapEdge<V> getLongerEdge() {
 		
-		if(containsEdge(edge1, edge2))
-			edges--;
+		if(edges == 0) return null;
 		
+		MapEdge<V> ret = new MapEdge<V>(null, null ,Double.MIN_VALUE);
 		
-		table.get(edge1).remove(edge2);
-		table.get(edge2).remove(edge1);
+		for (V edgeKey : table.keySet()) {
+			for(V edgeNehi : getNehiVertex(edgeKey)){
+				
+				if( ret.weight.compareTo( edgeKey.distanceTo(edgeNehi)) == -1){
+					ret = new MapEdge<V>(edgeKey, edgeNehi);
+				}
+				
+			}
+		}
 		
-		
+		return ret;
 	}
 	
 	public Double getWeigth(V e1, V e2){
@@ -111,36 +129,21 @@ public class MapGraph <V extends Graphable<V>>{
 		return refList.get(i);
 	}
 	
-	private void checkBounds(V v1, V v2){
-		if (v1 == null || v2 == null)
-			throw new IllegalArgumentException("Vertice nulo");
-
-		if (!table.containsKey(v1) || !table.containsKey(v2))
-			throw new IllegalArgumentException("Vertices no existentes" + v1.toString() + ", " + v2.toString());
-
-		if (v1.equals(v2))
-			throw new IllegalArgumentException("No se pueden agregar loops: " + v1.toString());
-	}
-
-
-
-	public MapEdge<V> getLongerEdge() {
+	public List< MapEdge<V> > getEdgesList(){
 		
-		if(edges == 0) return null;
+		List< MapEdge<V> >ret = new ArrayList<>();
 		
-		MapEdge<V> ret = new MapEdge<V>(null, null ,Double.MIN_VALUE);
-		
-		for (V edgeKey : table.keySet()) {
-			for(V edgeNehi : getNehiVertex(edgeKey)){
+		for(V vertex1 : table.keySet()){
+			for(V vertex2: table.get(vertex1)){
+				MapEdge<V> toAdd = new MapEdge<V>(vertex1, vertex2);
 				
-				if( ret.weight.compareTo( edgeKey.distanceTo(edgeNehi)) == -1){
-					ret = new MapEdge<V>(edgeKey, edgeNehi);
-				}
-				
+				if(!ret.contains(toAdd))ret.add(toAdd);
 			}
 		}
 		
+		
 		return ret;
+		
 	}
 	
 	public int getEdges(){
@@ -151,6 +154,16 @@ public class MapGraph <V extends Graphable<V>>{
 		return vertices;
 	}
 	
+	private void checkBounds(V v1, V v2){
+		if (v1 == null || v2 == null)
+			throw new IllegalArgumentException("Vertice nulo");
+
+		if (!table.containsKey(v1) || !table.containsKey(v2))
+			throw new IllegalArgumentException("Vertices no existentes" + v1.toString() + ", " + v2.toString());
+
+		if (v1.equals(v2))
+			throw new IllegalArgumentException("No se pueden agregar loops: " + v1.toString());
+	}
 	
 	@Override
 	public String toString(){
@@ -174,8 +187,5 @@ public class MapGraph <V extends Graphable<V>>{
 		return false;
 		
 	}
-
-	
-	
 	
 }

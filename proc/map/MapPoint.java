@@ -50,12 +50,12 @@ public class MapPoint implements Graphable<MapPoint>{
 	    
 	    if (other == this) return true;
 	    
-	    if (!(other instanceof MapPoint))return false;
-	    
-	    MapPoint otherMapPoint = (MapPoint)other;
-	    
-	    if(this.getLat() == otherMapPoint.getLat() && this.getLon() == otherMapPoint.getLon())return true;
-	    else return false;
+	    if (other.getClass() == this.getClass()){
+	    	MapPoint otherMapPoint = (MapPoint)other;
+	    	if(this.getLat() == otherMapPoint.getLat() && 
+	    			this.getLon() == otherMapPoint.getLon())return true;
+	    }
+	    return false;
 	}
 	
 	@Override

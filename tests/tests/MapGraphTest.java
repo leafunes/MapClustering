@@ -3,6 +3,8 @@ package tests;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -38,6 +40,9 @@ public class MapGraphTest {
 		
 		assertEquals(0, graph.getEdges());
 		
+		graph.addEdge(p1, p2);
+		graph.addEdge(p1, p2);
+		graph.addEdge(p1, p2);
 		graph.addEdge(p1, p2);
 		
 		graph.addEdge(p2, p1);
@@ -196,6 +201,35 @@ public class MapGraphTest {
 		MapEdge<MapPoint> edge = graph.getLongerEdge();
 		
 		assertEquals(9117.983984853816, edge.weight, 10E-9);
+		
+	}
+	
+	@Test
+	public void getEdgeSetTest(){
+		
+		MapGraph<MapPoint> graph = generateMap();
+		
+		graph.addEdge(p1, p2);
+		graph.addEdge(p1, p3);
+		graph.addEdge(p1, p4);
+		graph.addEdge(p3, p4);
+		//Repetidos
+		graph.addEdge(p4, p3);
+		graph.addEdge(p3, p4);
+		
+		List <MapEdge <MapPoint>> expected = new ArrayList<>();
+		
+		expected.add(new MapEdge<MapPoint>(p2, p1));
+		expected.add(new MapEdge<MapPoint>(p3, p1));
+		expected.add(new MapEdge<MapPoint>(p1, p4));
+		expected.add(new MapEdge<MapPoint>(p4, p3));
+		
+		
+		assertEquals( graph.getEdges(),graph.getEdgesList().size() );
+		
+		
+		
+		assertTrue(expected.containsAll(graph.getEdgesList()));
 		
 	}
 

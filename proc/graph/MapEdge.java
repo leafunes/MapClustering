@@ -16,12 +16,22 @@ public class MapEdge <V extends Graphable<V>>{
 		vertex2 = j;
 		this.weight = i.distanceTo(j);
 	}
+	
+	@Override
+	public String toString(){
+		
+		return vertex1.toString() + "---" + vertex2.toString();
+		
+	}
 
 	@Override
 	public boolean equals(Object other)
 	{
 		
-		if (other instanceof MapEdge<?>){
+		if(other == null)return false;
+		if(other == this)return true;
+		
+		if (this.getClass() == other.getClass()){
 			MapEdge<?>edge = (MapEdge<?>)other;
 			
 	        if ( edge.vertex1.equals(vertex1) && edge.vertex2.equals(vertex2) ||
@@ -31,5 +41,5 @@ public class MapEdge <V extends Graphable<V>>{
 	    }
 		
 		return false;
-	}	
+	}
 }
