@@ -1,6 +1,5 @@
 package mapSolvers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import graph.MapEdge;
@@ -18,7 +17,7 @@ public class LongerEdge <E extends Graphable<E>> extends MapSolver<E>{
 		
 	}
 	
-	
+	@Override
 	public List<Cluster<E>> solveMap(){
 		
 		MapGraph<E> graph = generateGraph();
