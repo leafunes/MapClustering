@@ -2,12 +2,17 @@ package gui;
 
 import java.awt.Component;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
+
+import map.Cluster;
+import map.MapPoint;
 
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -31,17 +36,6 @@ public class ClusterPanel  extends JPanel{
 		this.add(map);
 		
 		super.setBounds(parent.getBounds());
-		
-		/*getCoordWin = new GetCoord();
-		
-		fileChooser = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Map Files *.map", "map");
-		fileChooser.setFileFilter(filter);
-		
-		
-		mapInit();
-		newMap();
-		menuInit();*/
 		
 		
 	}
