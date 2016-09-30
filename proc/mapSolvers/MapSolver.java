@@ -10,10 +10,11 @@ import graph.ClusterSolver;
 import graph.Graphable;
 import map.Cluster;
 
-abstract class MapSolver <E extends Graphable<E>>{
+abstract public class MapSolver <E extends Graphable<E>>{
 	
 	protected List<E> mapPoints;
 	protected int cantClusters;
+	public String NAME;
 	
 	public MapSolver(List<E> mapPoints, int n) {
 		this.mapPoints = new ArrayList<E>();

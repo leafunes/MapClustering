@@ -13,6 +13,8 @@ import org.openstreetmap.gui.jmapviewer.JMapViewer;
 
 import map.Cluster;
 import map.MapPoint;
+import mapSolvers.LongerEdge;
+import mapSolvers.MapSolver;
 
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
