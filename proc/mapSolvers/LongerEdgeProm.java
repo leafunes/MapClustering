@@ -59,22 +59,36 @@ public class LongerEdgeProm <E extends Graphable<E>> extends MapSolver<E>{
 	
 	private MapEdge<E> getLongerEdgeProm(MapGraph<E> graphAGM){
 		
-		//TODO
+		List <MapEdge<E>> edges = graphAGM.getEdgesList();
 		
-		/***
-		 * 
-		 * Por cada edge
-		 * obtener cada vecino
-		 * obtener el promedio de los vecinos
-		 * ¿Que tean largo es el edge respecto a los vecinos?
-		 * devolver el edge mas largo respecto a los vecinos
-		 * 
-		 * 
-		 */
-		return null;
+		double longerRelDist = Double.MIN_VALUE;
+		MapEdge<E> longerEdge = null;
+		
+		for (MapEdge<E> actualEdge : edges) {
+			
+			double actualRelDist = actualEdge.weight / getEdgeProm(graphAGM.getNehiEdges(actualEdge));
+			
+			if(actualRelDist > longerRelDist){
+				longerRelDist = actualRelDist;
+				longerEdge = actualEdge;
+			}
+
+			
+		}
+		
+		return longerEdge;
 		
 	}
 
+	
+	private double getEdgeProm(List<MapEdge<E>> edges){
+		
+		double prom = 0;
+		
+		for(MapEdge<E> edge: edges)prom += edge.weight;
+		
+		return prom/edges.size();
+	}
 	
 	
 }

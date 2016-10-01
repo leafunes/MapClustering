@@ -109,10 +109,46 @@ public class MapGraph <V extends Graphable<V>>{
 	public Set<V> getNehiVertex(V i2) {
 		
 		if(i2 == null || !table.containsKey(i2))
-			throw new IllegalArgumentException("No existe la arista");
+			throw new IllegalArgumentException("No existe el vertice");
 		
 		return table.get(i2);
 		
+		
+	}
+	
+	public List< MapEdge<V> > getNehiEdges(V v1, V v2){
+		
+		if(v1 == null || v2 == null)
+			throw new IllegalArgumentException("Arista nula");
+		
+		if(!containsEdge(v1, v2))
+			throw new IllegalArgumentException("no existe la arista, " +
+											v1.toString() + " -- " + v2.toString());
+		
+		List < MapEdge <V> > ret = new ArrayList<>();
+		
+		for(V vertex : table.get(v1)){
+			if(!vertex.equals(v2))ret.add( new MapEdge<V>(v1, vertex));
+		}
+		
+		for(V vertex : table.get(v2)){
+			if(!vertex.equals(v1))ret.add( new MapEdge<V>(v2, vertex));
+		}
+		
+		return ret;
+		
+	}
+	
+	public List< MapEdge<V> > getNehiEdges(MapEdge<V> edge){
+		
+		if(edge == null)
+			throw new IllegalArgumentException("Arista nula");
+		
+		if(!containsEdge(edge.vertex1, edge.vertex2))
+			throw new IllegalArgumentException("no existe la arista, " +
+											edge.toString());
+		
+		return getNehiEdges(edge.vertex1, edge.vertex2);
 		
 	}
 	
