@@ -34,6 +34,11 @@ class GraphableInteger implements Graphable<GraphableInteger>{
 		
 		return Math.abs( this.value - other.value );
 	}
+	
+	@Override
+	public String toString() {
+		return String.valueOf(this.value);
+	}
 
 	@Override
 	public int compareTo(GraphableInteger other) {

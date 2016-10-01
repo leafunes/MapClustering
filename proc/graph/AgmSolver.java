@@ -21,14 +21,11 @@ public class AgmSolver {
 			for(int i=0; i< edges - 1; ++i)
 			{
 				MapEdge<T> a = minorEdge(graph, visited);
-				if(i%100 == 0){
-					System.out.println(i + ":" + (edges - 1) +"->" + a.vertex1 + " -- " + a.vertex2);
-				}
+				
 				try {
 					agm.addEdge(a.vertex1, a.vertex2);
-				} catch (IllegalArgumentException e) {
-					// TODO: handle exception
-				}
+				}finally{}
+				
 				visited.add(a.vertex2);
 			}
 			

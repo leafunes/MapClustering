@@ -48,7 +48,7 @@ public class Cluster <E extends Graphable<E>> implements Iterable<E>{
 		if(other.getClass() == this.getClass()){
 			Cluster<?> cluster = (Cluster<?>) other;
 			
-			return cluster.points.equals(this.points);
+			return cluster.points.containsAll(points) && points.containsAll(cluster.points);
 			
 		}
 		return false;

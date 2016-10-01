@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.plaf.synth.SynthSpinnerUI;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -67,7 +69,7 @@ public class ClusterSolverTest {
 		assertTrue(visited.containsAll(vecindarioExpected));
 	}
 	
-	@Test(timeout = 1000)
+	@Test(timeout = 100)
 	public void testGetClustersOf() {
 		MapGraph<GraphableInteger> map = map();
 		
@@ -75,19 +77,12 @@ public class ClusterSolverTest {
 		
 		assertEquals(2, clusters.size());
 		
-		Set<GraphableInteger> vecindarioExpected = new TreeSet<>();
-		
-		vecindarioExpected.add(a1);
-		vecindarioExpected.add(a2);
-		vecindarioExpected.add(a5);
-		
 		Cluster<GraphableInteger> c1 = new Cluster<>();
 		c1.addPoint(a1);
 		c1.addPoint(a2);
-		c1.addPoint(a3);
+		c1.addPoint(a5);
 		
-		
-		assertTrue(clusters.get(0).equals(c1));
+		assertTrue(clusters.get(0).equals(c1) || clusters.get(1).equals(c1));
 		
 	}
 	
