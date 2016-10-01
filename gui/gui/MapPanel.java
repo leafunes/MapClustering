@@ -55,7 +55,6 @@ public class MapPanel extends JPanel{
 		setLayout(null);
 		
 		getCoordWin = new GetCoord();
-		getCoordWin.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
 		
 		fileChooser = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Map Files *.map", "map");
@@ -145,8 +144,6 @@ public class MapPanel extends JPanel{
 				getCoordWin.setVisible(true);
 				
 				MapPoint point = getCoordWin.getPoint();
-				
-				System.out.println("asd");
 					
 				mapData.removePoint(point);
 				

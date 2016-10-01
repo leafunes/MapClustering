@@ -9,11 +9,12 @@ import graph.ClusterSolver;
 import graph.Graphable;
 import map.Cluster;
 
-public class LongerEdge <E extends Graphable<E>> extends MapSolver<E>{
+public class LongerEdge <E extends Graphable<E>> extends MapSolver<E>{ 
 	
 	public LongerEdge(List<E> mapPoints, int n){
 		
 		super(mapPoints,n);
+		NAME = "Mayor arista";
 		
 	}
 	

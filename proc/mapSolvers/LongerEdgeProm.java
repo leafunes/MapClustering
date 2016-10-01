@@ -15,6 +15,7 @@ public class LongerEdgeProm <E extends Graphable<E>> extends MapSolver<E>{
 
 	public LongerEdgeProm(List<E> mapPoints, int n) {
 		super(mapPoints, n);
+		NAME = "Mayor arista prom.";
 	}
 	
 	@Override

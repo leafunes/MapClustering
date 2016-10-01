@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
@@ -27,6 +28,9 @@ public class GetCoord extends JDialog {
 	 * Create the dialog.
 	 */
 	public GetCoord() {
+		
+		this.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
+		
 		setTitle("Ingrese las coordenadas");
 		setBounds(100, 100, 360, 180);
 		getContentPane().setLayout(new BorderLayout());

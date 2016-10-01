@@ -142,6 +142,10 @@ public class MapData implements Iterable<MapPoint>{
 		return ret;
 		
 	}
+	
+	public int getPointsCant(){
+		return this.points.size();
+	}
 
 	@Override
 	public Iterator<MapPoint> iterator() {

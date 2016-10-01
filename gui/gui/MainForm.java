@@ -10,6 +10,7 @@ public class MainForm {
 	private JFrame frame;
 	private JTabbedPane tabbedPane;
 	private MapPanel mapPanel;
+	private ClusterPanel clusterPanel;
 	
 	
 	/**
@@ -56,7 +57,9 @@ public class MainForm {
 		frame.getContentPane().add(tabbedPane);
 		
 		mapPanel = new MapPanel(tabbedPane);
+		clusterPanel = new ClusterPanel(tabbedPane);
 		tabbedPane.addTab("Mapa", null, mapPanel, null);
+		tabbedPane.addTab("Clusters", null, clusterPanel, null);
 	}
 	
 	
