@@ -12,6 +12,8 @@ import map.Cluster;
 public class LongerEdge <E extends Graphable<E>> extends MapSolver<E>{ 
 	
 	MapGraph<E> graphAGM;
+	MapGraph<E> rawGraph;
+	MapGraph<E> clustersGraph;
 	
 	public LongerEdge(){
 		NAME = "Mayor arista";
@@ -21,11 +23,11 @@ public class LongerEdge <E extends Graphable<E>> extends MapSolver<E>{
 	@Override
 	public List<Cluster<E>> solveMap(int cantClusters){
 		
-		MapGraph<E> graphAGM_copy = graphAGM.clone();
+		if(this.mapPoints.isEmpty())throw new IllegalArgumentException("La lista de puntos esta vacia");
 		
-		removeVertices(graphAGM_copy, cantClusters);
+		removeVertices(cantClusters);
 		
-		return ClusterSolver.getClustersOf(graphAGM_copy);
+		return ClusterSolver.getClustersOf(clustersGraph);
 		
 	}
 	
@@ -35,28 +37,35 @@ public class LongerEdge <E extends Graphable<E>> extends MapSolver<E>{
 		this.mapPoints.clear();
 		this.mapPoints.addAll(mapPoints);
 		
-		MapGraph<E> graph = generateGraph();
-		graphAGM = AgmSolver.getAGM(graph);
+		generateGraph();
+		graphAGM = AgmSolver.getAGM(rawGraph);
 		
 		
 	}
 
-	public void removeVertices(MapGraph<E> graphAGM, int cantClusters) {
+	public void removeVertices(int cantClusters) {
+		
+		if(graphAGM == null) throw new NullPointerException("El AGM es nulo");
+		
+		if(cantClusters > graphAGM.getEdges())throw new IllegalArgumentException("No se pueden crear " + cantClusters + " con un mapa con " + graphAGM.getEdges() + " puntos");
+		
+		clustersGraph = graphAGM.clone();
+		
 		for(int i = 0; i < cantClusters - 1; i++){
-			MapEdge<E> e = graphAGM.getLongerEdge();
-			graphAGM.removeEdge(e);
+			MapEdge<E> e = clustersGraph.getLongerEdge();
+			clustersGraph.removeEdge(e);
 		}
 		
 	}
 
-	public MapGraph<E> generateGraph() {
+	public void generateGraph() {
 		
-		MapGraph<E> graph = new MapGraph<>(mapPoints);
+		rawGraph = new MapGraph<>(mapPoints);
 		
 		for (E i : mapPoints) {
 			for (E j : mapPoints) {
 				try{
-					graph.addEdge(i, j);
+					rawGraph.addEdge(i, j);
 				}
 				catch(IllegalArgumentException e){
 					
@@ -64,7 +73,35 @@ public class LongerEdge <E extends Graphable<E>> extends MapSolver<E>{
 			}
 		}
 		
-		return graph;
+	}
+	
+	public void setMapPoints(List<E> mapPoints){
+		this.mapPoints.clear();
+		this.mapPoints.addAll(mapPoints);
+	}
+
+	public MapGraph<E> getGraphAGM() {
+		return graphAGM;
+	}
+
+	public MapGraph<E> getRawGraph() {
+		return rawGraph;
+	}
+
+	public MapGraph<E> getClustersGraph() {
+		return clustersGraph;
+	}
+
+	public void setGraphAGM(MapGraph<E> graphAGM) {
+		this.graphAGM = graphAGM;
+	}
+
+	public void setRawGraph(MapGraph<E> rawGraph) {
+		this.rawGraph = rawGraph;
+	}
+
+	public void setClustersGraph(MapGraph<E> clustersGraph) {
+		this.clustersGraph = clustersGraph;
 	}
 
 
