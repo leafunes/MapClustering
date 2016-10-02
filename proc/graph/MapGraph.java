@@ -175,13 +175,21 @@ public class MapGraph <V extends Graphable<V>>{
 		
 	}
 	
-	public int getEdges(){
-		return edges;
+	public MapGraph<V> clone(){
+		
+		MapGraph<V> ret = new MapGraph<>(refList);
+		
+		for (V vertex1 : table.keySet()) {
+			for (V vertex2 : table.get(vertex1)) {
+				
+				ret.addEdge(vertex1, vertex2);
+				
+			}
+		}
+		
+		return ret;
 	}
 	
-	public int getVertices(){
-		return vertices;
-	}
 	
 	private void checkBounds(V v1, V v2){
 		if (v1 == null || v2 == null)
@@ -192,6 +200,14 @@ public class MapGraph <V extends Graphable<V>>{
 
 		if (v1.equals(v2))
 			throw new IllegalArgumentException("No se pueden agregar loops: " + v1.toString());
+	}
+	
+	public int getEdges(){
+		return edges;
+	}
+	
+	public int getVertices(){
+		return vertices;
 	}
 	
 	@Override

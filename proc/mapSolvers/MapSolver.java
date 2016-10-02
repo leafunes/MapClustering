@@ -13,19 +13,14 @@ import map.Cluster;
 abstract public class MapSolver <E extends Graphable<E>>{
 	
 	protected List<E> mapPoints;
-	protected int cantClusters;
 	public String NAME;
 	
-	public MapSolver(List<E> mapPoints, int n) {
+	public MapSolver() {
 		this.mapPoints = new ArrayList<E>();
-		
-		this.mapPoints.addAll(mapPoints);
-		
-		this.cantClusters = n;
 	}
 	
-	
-	public abstract List<Cluster<E>> solveMap();
+	public abstract void actualizeData(List<E> mapPoints);
+	public abstract List<Cluster<E>> solveMap(int cantClusters);
 
 
 }

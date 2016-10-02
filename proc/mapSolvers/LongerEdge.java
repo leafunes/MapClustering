@@ -11,27 +11,37 @@ import map.Cluster;
 
 public class LongerEdge <E extends Graphable<E>> extends MapSolver<E>{ 
 	
-	public LongerEdge(List<E> mapPoints, int n){
-		
-		super(mapPoints,n);
+	MapGraph<E> graphAGM;
+	
+	public LongerEdge(){
 		NAME = "Mayor arista";
 		
 	}
 	
 	@Override
-	public List<Cluster<E>> solveMap(){
+	public List<Cluster<E>> solveMap(int cantClusters){
+		
+		MapGraph<E> graphAGM_copy = graphAGM.clone();
+		
+		removeVertices(graphAGM_copy, cantClusters);
+		
+		return ClusterSolver.getClustersOf(graphAGM_copy);
+		
+	}
+	
+	@Override
+	public void actualizeData(List<E> mapPoints) {
+		
+		this.mapPoints.clear();
+		this.mapPoints.addAll(mapPoints);
 		
 		MapGraph<E> graph = generateGraph();
+		graphAGM = AgmSolver.getAGM(graph);
 		
-		MapGraph<E> graphAGM = AgmSolver.getAGM(graph);
-		
-		removeVertices(graphAGM);
-		
-		return ClusterSolver.getClustersOf(graphAGM);
 		
 	}
 
-	public void removeVertices(MapGraph<E> graphAGM) {
+	public void removeVertices(MapGraph<E> graphAGM, int cantClusters) {
 		for(int i = 0; i < cantClusters - 1; i++){
 			MapEdge<E> e = graphAGM.getLongerEdge();
 			graphAGM.removeEdge(e);
