@@ -33,19 +33,21 @@ public class MapGraph <V extends Graphable<V>>{
 	
 	public boolean containsEdge(V vertex1, V vertex2){
 		
-		checkBounds(vertex1, vertex2);
+		checkContainsBounds(vertex1, vertex2);
 		
 		return table.get(vertex1).contains(vertex2) &&
 				table.get(vertex2).contains(vertex1);
 	}
 
-	public void addEdge(V edge1, V edge2) throws IllegalArgumentException{
+	public void addEdge(V vertex1, V vertex2) throws IllegalArgumentException{
 		
-		if(!containsEdge(edge1, edge2))
+		checkAddBounds(vertex1, vertex2);
+		
+		if(!containsEdge(vertex1, vertex2))
 			edges++;
 	
-		table.get(edge1).add(edge2);
-		table.get(edge2).add(edge1);
+		table.get(vertex1).add(vertex2);
+		table.get(vertex2).add(vertex1);
 	}
 	
 	public void addEdge(MapEdge<V> e) throws IllegalArgumentException{
@@ -53,13 +55,15 @@ public class MapGraph <V extends Graphable<V>>{
 		addEdge(e.vertex1, e.vertex2);
 	}
 	
-	public void removeEdge(V edge1, V edge2){
+	public void removeEdge(V vertex1, V vertex2){
 		
-		if(containsEdge(edge1, edge2))
+		checkAddBounds(vertex1, vertex2);
+		
+		if(containsEdge(vertex1, vertex2))
 			edges--;
 		
-		table.get(edge1).remove(edge2);
-		table.get(edge2).remove(edge1);
+		table.get(vertex1).remove(vertex2);
+		table.get(vertex2).remove(vertex1);
 			
 	}
 	
@@ -190,13 +194,22 @@ public class MapGraph <V extends Graphable<V>>{
 		return ret;
 	}
 	
-	
-	private void checkBounds(V v1, V v2){
+	private void checkContainsBounds(V v1, V v2){
 		if (v1 == null || v2 == null)
 			throw new IllegalArgumentException("Vertice nulo");
 
 		if (!table.containsKey(v1) || !table.containsKey(v2))
-			throw new IllegalArgumentException("Vertices no existentes" + v1.toString() + ", " + v2.toString());
+			throw new IllegalArgumentException("Vertices no existentes " + v1.toString() + ", " + v2.toString());
+
+	}
+	
+	
+	private void checkAddBounds(V v1, V v2){
+		if (v1 == null || v2 == null)
+			throw new IllegalArgumentException("Vertice nulo");
+
+		if (!table.containsKey(v1) || !table.containsKey(v2))
+			throw new IllegalArgumentException("Vertices no existentes " + v1.toString() + ", " + v2.toString());
 
 		if (v1.equals(v2))
 			throw new IllegalArgumentException("No se pueden agregar loops: " + v1.toString());

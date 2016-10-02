@@ -49,6 +49,8 @@ public class LongerEdge <E extends Graphable<E>> extends MapSolver<E>{
 		
 		if(cantClusters > graphAGM.getEdges())throw new IllegalArgumentException("No se pueden crear " + cantClusters + " con un mapa con " + graphAGM.getEdges() + " puntos");
 		
+		if(cantClusters <= 0)throw new IllegalArgumentException("la cantidad de clusters debe ser positiva: " + cantClusters);
+		
 		clustersGraph = graphAGM.clone();
 		
 		for(int i = 0; i < cantClusters - 1; i++){
