@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class MainForm {
 
@@ -60,6 +62,20 @@ public class MainForm {
 		clusterPanel = new ClusterPanel(tabbedPane);
 		tabbedPane.addTab("Mapa", null, mapPanel, null);
 		tabbedPane.addTab("Clusters", null, clusterPanel, null);
+		
+		tabbedPane.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+
+	            if(tabbedPane.getSelectedIndex() == 1){
+	            	clusterPanel.actualizePoints(mapPanel.mapData.getPoints());
+	            }
+				
+			}
+		});
+		
+		
 	}
 	
 	

@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import graph.Graphable;
 import graph.MapGraph;
 
@@ -39,7 +42,6 @@ public class Cluster <E extends Graphable<E>> implements Iterable<E>{
 		}
 		
 	}
-	
 	
 	@Override
 	public boolean equals(Object other){

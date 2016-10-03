@@ -43,7 +43,7 @@ public class MapPanel extends JPanel{
 	private boolean addMarkerFromMap;
 	private boolean removeMarker;
 	
-	private MapData mapData;
+	MapData mapData;
 	
 	private GetCoord getCoordWin;
 	
