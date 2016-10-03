@@ -18,6 +18,7 @@ import graph.Graphable;
 import map.Cluster;
 import map.MapPoint;
 import mapSolvers.LongerEdge;
+import mapSolvers.LongerEdgeProm;
 import mapSolvers.MapSolver;
 
 import javax.swing.JComboBox;
@@ -39,10 +40,13 @@ public class ClusterPanel  extends JPanel{
 	private ClusterConfig clusterConfig;
 
 	LongerEdge<MapPoint> solverLongerEdge;
+	LongerEdgeProm<MapPoint> solverLongerEdgeProm;
 	List <MapPoint> pointList;
 	List<MapSolver<MapPoint>> mapSolversList;
 	
 	List<Cluster<MapPoint>> clusters;
+	
+	MapSolver<MapPoint> selectedSolver;
 	
 	int cantClusters;
 	
@@ -51,10 +55,12 @@ public class ClusterPanel  extends JPanel{
 		super.setBounds(parent.getBounds());
 		
 		solverLongerEdge = new LongerEdge<>();
+		solverLongerEdgeProm = new LongerEdgeProm<>();
 		map = new JMapViewer();
 		
 		mapSolversList = new ArrayList<>();
 		mapSolversList.add(solverLongerEdge);
+		mapSolversList.add(solverLongerEdgeProm);
 		
 		map.setBounds(new Rectangle(0, 21, 793, 527));
 		this.add(map);
@@ -88,6 +94,7 @@ public class ClusterPanel  extends JPanel{
 					clusterConfig = new ClusterConfig(mapSolversList, pointList);
 					clusterConfig.setVisible(true);
 					cantClusters = clusterConfig.cantClusters;
+					selectedSolver = mapSolversList.get( clusterConfig.getSelectedSolverIndex());
 					generateClsuters();
 				
 				}
@@ -129,7 +136,7 @@ public class ClusterPanel  extends JPanel{
 	
 	private void actualizeData(){
 		
-		solverLongerEdge.actualizeData(pointList);
+		selectedSolver.actualizeData(pointList);
 		generateClsuters();
 		plotPoints();
 		
@@ -156,7 +163,7 @@ public class ClusterPanel  extends JPanel{
 	
 	private void generateClsuters(){
 
-		clusters = solverLongerEdge.solveMap(cantClusters);
+		clusters = selectedSolver.solveMap(cantClusters);
 	}
 	
 }
