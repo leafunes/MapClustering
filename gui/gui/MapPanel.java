@@ -217,7 +217,7 @@ public class MapPanel extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				fileChooser.showSaveDialog(null);
 				file = fileChooser.getSelectedFile();
-				if (fileChooser.getFileFilter().getDescription().equals("Map Files *.map"))
+				if (fileChooser.getFileFilter().getDescription().equals("Map Files *.map") && file != null)
 					file = new File(file.getAbsoluteFile() + ".map");
 					
 				exportMapFile();
@@ -250,7 +250,7 @@ public class MapPanel extends JPanel{
 	
 	protected void exportMapFile() {
 		try {
-			mapData.saveToFile(file);
+			if(file != null)mapData.saveToFile(file);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, "No se pudo guardar el archivo", "Error", JOptionPane.ERROR_MESSAGE);
 			

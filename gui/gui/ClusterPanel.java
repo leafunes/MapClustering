@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
@@ -89,24 +92,26 @@ public class ClusterPanel  extends JPanel{
 		JMenuItem mntmConfiguracion = new JMenuItem("Configuracion");
 		mnOpciones.add(mntmConfiguracion);
 		mntmConfiguracion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				
-					clusterConfig = new ClusterConfig(mapSolversList, pointList);
-					clusterConfig.setVisible(true);
-					cantClusters = clusterConfig.cantClusters;
-					selectedSolver = mapSolversList.get( clusterConfig.getSelectedSolverIndex());
-					generateClsuters();
-				
+					if(isListOk()){
+						clusterConfig = new ClusterConfig(mapSolversList, pointList);
+						clusterConfig.setVisible(true);
+						changeClustersConfig();
+					}
 				}
+			
 			});
 		
 		JMenuItem mntmEditarColor = new JMenuItem("Editar Color");
 		mntmEditarColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				editColor = new EditColor(clusters);
-				editColor.setVisible(true);
-				plotPoints();
+				if(isListOk() && isSolverOk()  && isClustersOk()){
+					editColor = new EditColor(clusters);
+					editColor.setVisible(true);
+					plotPoints();
+				}
 				
 			}
 		});
@@ -136,10 +141,20 @@ public class ClusterPanel  extends JPanel{
 	
 	private void actualizeData(){
 		
-		selectedSolver.actualizeData(pointList);
-		generateClsuters();
-		plotPoints();
-		
+
+		if(isListOk() && isSolverOk()){
+			selectedSolver.actualizeData(pointList);
+			generateClsuters();
+			plotPoints();
+		}
+	}
+	
+	private void changeClustersConfig() {
+		if(isListOk()){
+			cantClusters = clusterConfig.cantClusters;
+			selectedSolver = mapSolversList.get( clusterConfig.getSelectedSolverIndex());
+			generateClsuters();
+		}
 	}
 
 	private void plotPoints() {
@@ -161,8 +176,47 @@ public class ClusterPanel  extends JPanel{
 		
 	}
 	
+	private boolean isSolverOk(){
+		
+		if(selectedSolver == null){
+			JOptionPane.showMessageDialog(null,
+				 	"No se configuro el algoritmo a usar.",
+				 	"Error",
+				 	JOptionPane.ERROR_MESSAGE);
+			
+			return false;
+		}
+		
+		return true;
+		
+	}
+	
+	private boolean isListOk(){
+		
+		if(pointList.size() <= 0){
+			JOptionPane.showMessageDialog(null,
+				 	"No hay puntos en el mapa. Hay que agregarlos desde la pestaña mapa.\n Tal vez sea necesario actualizar.",
+				 	"Info",
+				 	JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		
+		return true;
+	}
+	
+	private boolean isClustersOk(){
+		if(clusters == null){
+			JOptionPane.showMessageDialog(null,
+				 	"No se generaron los clusters.",
+				 	"Error",
+				 	JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		return true;
+	}
+	
 	private void generateClsuters(){
-
 		clusters = selectedSolver.solveMap(cantClusters);
 	}
 	

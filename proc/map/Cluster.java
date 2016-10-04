@@ -62,7 +62,7 @@ public class Cluster <E extends Graphable<E>> implements Iterable<E>{
 	}
 
 	public Color getColor() {
-		// TODO Auto-generated method stub
+		
 		return this.color;
 	}
 	
