@@ -41,6 +41,7 @@ public class ClusterPanel  extends JPanel{
 	private JMapViewer map;
 	private EditColor editColor;
 	private ClusterConfig clusterConfig;
+	private boolean hasActualized;
 
 	LongerEdge<MapPoint> solverLongerEdge;
 	LongerEdgeProm<MapPoint> solverLongerEdgeProm;
@@ -143,6 +144,7 @@ public class ClusterPanel  extends JPanel{
 		
 
 		if(isListOk() && isSolverOk()){
+			hasActualized = true;
 			selectedSolver.actualizeData(pointList);
 			generateClsuters();
 			plotPoints();
@@ -217,6 +219,7 @@ public class ClusterPanel  extends JPanel{
 	}
 	
 	private void generateClsuters(){
+		if(!hasActualized) actualizeData();
 		clusters = selectedSolver.solveMap(cantClusters);
 	}
 	
