@@ -229,5 +229,4 @@ public class ClusterPanel  extends JPanel{
 			plotPoints();
 		}
 	}
-	
 }
