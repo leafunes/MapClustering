@@ -145,6 +145,15 @@ public class MapPanel extends JPanel{
 		
 		JMenuItem mntmNuevoMapa = new JMenuItem("Nuevo mapa");
 		mapArchivo.add(mntmNuevoMapa);
+		mntmNuevoMapa.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				mapData = new MapData();
+				map.removeAllMapMarkers();
+				
+			}
+		});
 		
 		JMenuItem mapImportar = new JMenuItem("Importar");
 		mapArchivo.add(mapImportar);

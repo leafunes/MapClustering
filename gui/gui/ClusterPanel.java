@@ -125,6 +125,7 @@ public class ClusterPanel  extends JPanel{
 			public void mouseClicked(MouseEvent e) {
 				
 				actualizeData();
+				generateClsuters();
 				
 			}
 		});
@@ -143,12 +144,10 @@ public class ClusterPanel  extends JPanel{
 	
 	private void actualizeData(){
 		
-
 		if(isListOk() && isSolverOk()){
 			hasActualized = true;
 			selectedSolver.actualizeData(pointList);
-			generateClsuters();
-			plotPoints();
+			
 		}
 	}
 	
@@ -220,9 +219,15 @@ public class ClusterPanel  extends JPanel{
 	}
 	
 	private void generateClsuters(){
-		if(!hasActualized) actualizeData();
-		clusters = selectedSolver.solveMap(cantClusters);
-		System.out.println(selectedSolver.NAME);
+		if(isSolverOk()){
+			if(!hasActualized) actualizeData();
+			try{
+				clusters = selectedSolver.solveMap(cantClusters);
+			}catch(IllegalArgumentException e){
+				actualizeData();
+			}
+			plotPoints();
+		}
 	}
 	
 }
