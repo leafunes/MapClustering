@@ -12,6 +12,8 @@ import map.Cluster;
 public class LongerEdgeProm <E extends Graphable<E>> extends MapSolver<E>{
 	
 	MapGraph<E> graphAGM;
+	MapGraph<E> rawGraph;
+	MapGraph<E> clustersGraph;
 
 	public LongerEdgeProm() {
 		NAME = "Mayor arista prom.";
@@ -20,11 +22,12 @@ public class LongerEdgeProm <E extends Graphable<E>> extends MapSolver<E>{
 	@Override
 	public List<Cluster<E>> solveMap(int cantClusters){
 		
-		MapGraph<E> graphAGM_copy = graphAGM.clone();
+		if(this.mapPoints.isEmpty())throw new IllegalArgumentException("La lista de puntos esta vacia");
 		
-		removeVertices(graphAGM_copy, cantClusters);
+		removeVertices(cantClusters);
 		
-		return ClusterSolver.getClustersOf(graphAGM_copy);
+		return ClusterSolver.getClustersOf(clustersGraph);
+		
 		
 	}
 	
@@ -34,42 +37,50 @@ public class LongerEdgeProm <E extends Graphable<E>> extends MapSolver<E>{
 		this.mapPoints.clear();
 		this.mapPoints.addAll(mapPoints);
 		
-		MapGraph<E> graph = generateGraph();
-		
-		graphAGM = AgmSolver.getAGM(graph);
+		generateGraph();
+		graphAGM = AgmSolver.getAGM(rawGraph);
 		
 	}
 	
 
-	public MapGraph<E> generateGraph() {
+	public void generateGraph() {
 		
-		MapGraph<E> graph = new MapGraph<>(mapPoints);
+		rawGraph = new MapGraph<>(mapPoints);
 		
 		for (E i : mapPoints) {
 			for (E j : mapPoints) {
 				try{
-					graph.addEdge(i, j);
+					rawGraph.addEdge(i, j);
 				}
 				catch(IllegalArgumentException e){
 					
 				}
 			}
 		}
-		
-		return graph;
 	}
 
-	public void removeVertices(MapGraph<E> graphAGM, int cantClusters) {
+	public void removeVertices(int cantClusters) {
+		
+		if(graphAGM == null) throw new NullPointerException("El AGM es nulo");
+		
+		if(cantClusters > graphAGM.getEdges())throw new IllegalArgumentException("No se pueden crear " + cantClusters + " con un mapa con " + graphAGM.getEdges() + " puntos");
+		
+		if(cantClusters <= 0)throw new IllegalArgumentException("la cantidad de clusters debe ser positiva: " + cantClusters);
+		
+		clustersGraph = graphAGM.clone();
+		System.out.println(cantClusters);
 		for(int i = 0; i < cantClusters - 1; i++){
-			MapEdge<E> e = getLongerEdgeProm(graphAGM);
-			graphAGM.removeEdge(e);
+			
+			System.out.println(i);
+			MapEdge<E> e = getLongerEdgeProm();
+			clustersGraph.removeEdge(e);
 		}
 		
 	}
 	
-	private MapEdge<E> getLongerEdgeProm(MapGraph<E> graphAGM){
+	private MapEdge<E> getLongerEdgeProm(){
 		
-		List <MapEdge<E>> edges = graphAGM.getEdgesList();
+		List <MapEdge<E>> edges = clustersGraph.getEdgesList();
 		
 		double longerRelDist = Double.MIN_VALUE;
 		MapEdge<E> longerEdge = null;

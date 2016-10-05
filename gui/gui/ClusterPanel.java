@@ -109,6 +109,7 @@ public class ClusterPanel  extends JPanel{
 			public void actionPerformed(ActionEvent arg0) {
 				
 				if(isListOk() && isSolverOk()  && isClustersOk()){
+					System.out.println(clusters.size());
 					editColor = new EditColor(clusters);
 					editColor.setVisible(true);
 					plotPoints();
@@ -197,7 +198,7 @@ public class ClusterPanel  extends JPanel{
 		
 		if(pointList.size() <= 0){
 			JOptionPane.showMessageDialog(null,
-				 	"No hay puntos en el mapa. Hay que agregarlos desde la pesta�a mapa.\n Tal vez sea necesario actualizar.",
+				 	"No hay puntos en el mapa. Hay que agregarlos desde la pestaña mapa.\n Tal vez sea necesario actualizar.",
 				 	"Info",
 				 	JOptionPane.INFORMATION_MESSAGE);
 			return false;
@@ -221,6 +222,7 @@ public class ClusterPanel  extends JPanel{
 	private void generateClsuters(){
 		if(!hasActualized) actualizeData();
 		clusters = selectedSolver.solveMap(cantClusters);
+		System.out.println(selectedSolver.NAME);
 	}
 	
 }
