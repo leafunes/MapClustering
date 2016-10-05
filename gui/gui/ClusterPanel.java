@@ -129,7 +129,7 @@ public class ClusterPanel  extends JPanel{
 		});
 		menuBar.add(btnActualizar);
 		
-		JButton btnEditarClusters = new JButton("Editar Clusters");
+		JToggleButton btnEditarClusters = new JToggleButton("Editar Clusters");
 		menuBar.add(btnEditarClusters);
 		
 		JToggleButton tglbtnMostrarCamino = new JToggleButton("Mostrar Camino");
@@ -197,7 +197,7 @@ public class ClusterPanel  extends JPanel{
 		
 		if(pointList.size() <= 0){
 			JOptionPane.showMessageDialog(null,
-				 	"No hay puntos en el mapa. Hay que agregarlos desde la pestaña mapa.\n Tal vez sea necesario actualizar.",
+				 	"No hay puntos en el mapa. Hay que agregarlos desde la pestaï¿½a mapa.\n Tal vez sea necesario actualizar.",
 				 	"Info",
 				 	JOptionPane.INFORMATION_MESSAGE);
 			return false;

@@ -21,6 +21,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.json.simple.parser.ParseException;
 import org.openstreetmap.gui.jmapviewer.Coordinate;
+import org.openstreetmap.gui.jmapviewer.DefaultMapController;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 
@@ -69,33 +70,20 @@ public class MapPanel extends JPanel{
 
 	private void mapInit() {
 		map = new JMapViewer();
-		map.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		
+		new DefaultMapController(map){
 
-				Coordinate coord = map.getPosition(e.getX(),e.getY());
-				
-				if(addMarkerFromMap){
-					
-					mapData.addPoint(new MapPoint(coord.getLat(), coord.getLon()));
-					
-					MapMarkerDot toAdd = new MapMarkerDot(coord);
-					map.addMapMarker(toAdd);
-					
-				}
-				
-				if(removeMarker){
-					
-					MapPoint toDelete = new MapPoint(coord.getLat(), coord.getLon());
-					
-					mapData.removeClosestTo(toDelete);
-					
-					map.removeAllMapMarkers();
-					loadMapPoints();
-				
-				}
-			}
-		});
+			    @Override
+			    public void mouseClicked(MouseEvent e) {
+			        if(e.getButton() == MouseEvent.BUTTON1){
+			    		Coordinate coord = map.getPosition(e.getX(),e.getY());
+			    		
+			        	if(addMarkerFromMap) addPoint(coord);
+			        	if(removeMarker) removePoint(coord);
+			        }
+			    }
+			};
+			
 		map.setBounds(new Rectangle(0, 21, 793, 527));
 		this.add(map);
 		
@@ -105,6 +93,8 @@ public class MapPanel extends JPanel{
 		mapData = new MapData();
 		map.removeAllMapMarkers();
 	}
+	
+	
 
 	private void menuInit() {
 		JMenuBar mapMenu = new JMenuBar();
@@ -228,7 +218,27 @@ public class MapPanel extends JPanel{
 		
 	}
 	
-	public void importMapFile(){
+	private void addPoint(Coordinate coord){
+		
+		mapData.addPoint(new MapPoint(coord.getLat(), coord.getLon()));
+			
+		MapMarkerDot toAdd = new MapMarkerDot(coord);
+		map.addMapMarker(toAdd);
+			
+	}
+	
+	private void removePoint(Coordinate coord){
+		
+		MapPoint toDelete = new MapPoint(coord.getLat(), coord.getLon());
+		
+		mapData.removeClosestTo(toDelete);
+		
+		map.removeAllMapMarkers();
+		loadMapPoints();
+		
+	}
+	
+	private void importMapFile(){
 		
 		if(file != null){
 			try {
@@ -248,7 +258,7 @@ public class MapPanel extends JPanel{
 		
 	}
 	
-	protected void exportMapFile() {
+	private void exportMapFile() {
 		try {
 			if(file != null)mapData.saveToFile(file);
 		} catch (IOException e) {
