@@ -64,16 +64,8 @@ public class LongerEdge <E extends Graphable<E>> extends MapSolver<E>{
 		
 		rawGraph = new MapGraph<>(mapPoints);
 		
-		for (E i : mapPoints) {
-			for (E j : mapPoints) {
-				try{
-					rawGraph.addEdge(i, j);
-				}
-				catch(IllegalArgumentException e){
-					
-				}
-			}
-		}
+		for (E i : mapPoints) for (E j : mapPoints)
+			if(i.equals(j) == false)rawGraph.addEdge(i, j);
 		
 	}
 	

@@ -47,16 +47,8 @@ public class LongerEdgeProm <E extends Graphable<E>> extends MapSolver<E>{
 		
 		rawGraph = new MapGraph<>(mapPoints);
 		
-		for (E i : mapPoints) {
-			for (E j : mapPoints) {
-				try{
-					rawGraph.addEdge(i, j);
-				}
-				catch(IllegalArgumentException e){
-					
-				}
-			}
-		}
+		for (E i : mapPoints) for (E j : mapPoints)
+			if(i.equals(j) == false)rawGraph.addEdge(i, j);
 	}
 
 	public void removeVertices(int cantClusters) {
@@ -68,10 +60,9 @@ public class LongerEdgeProm <E extends Graphable<E>> extends MapSolver<E>{
 		if(cantClusters <= 0)throw new IllegalArgumentException("la cantidad de clusters debe ser positiva: " + cantClusters);
 		
 		clustersGraph = graphAGM.clone();
-		System.out.println(cantClusters);
+		
 		for(int i = 0; i < cantClusters - 1; i++){
 			
-			System.out.println(i);
 			MapEdge<E> e = getLongerEdgeProm();
 			clustersGraph.removeEdge(e);
 		}
