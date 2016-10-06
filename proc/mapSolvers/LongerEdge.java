@@ -26,7 +26,7 @@ public class LongerEdge <E extends Distanciable<E>> extends MapSolver<E>{
 		
 		if(this.mapPoints.isEmpty())throw new IllegalArgumentException("La lista de puntos esta vacia");
 		
-		removeVertices(cantClusters);
+		removeEdges(cantClusters);
 		
 		return ClusterSolver.getClustersOf(clustersGraph,exportador);
 		
@@ -44,7 +44,7 @@ public class LongerEdge <E extends Distanciable<E>> extends MapSolver<E>{
 		
 	}
 
-	public void removeVertices(int cantClusters) {
+	public void removeEdges(int cantClusters) {
 		
 		if(graphAGM == null) throw new NullPointerException("El AGM es nulo");
 		

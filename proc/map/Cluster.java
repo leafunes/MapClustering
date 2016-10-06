@@ -47,6 +47,25 @@ public class Cluster <E extends Distanciable<E>> implements Iterable<E>{
 		
 	}
 	
+	public boolean contains(E point){
+		return points.contains(point);
+	}
+	
+	public static <E extends Distanciable<E>> int getBelongsIndex(List <Cluster<E>> list, E toExam){
+		if(list == null)
+			throw new IllegalArgumentException("La lista es nula");
+		
+		if(toExam == null)
+			throw new IllegalArgumentException("El argumento a examinar es nulo");
+		
+		for (int i = 0; i < list.size(); i++) {
+			if(list.get(i).contains(toExam)) return i;
+		}
+		
+		return -1;
+		
+	}
+	
 	public static <E extends Distanciable<E>> E getClosestToList(List <Cluster<E>> list, E toExam){
 		
 		return getClosestToList(list, toExam, Double.MAX_VALUE);

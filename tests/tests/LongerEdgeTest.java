@@ -83,7 +83,7 @@ public class LongerEdgeTest {
 		
 		toTest.setGraphAGM(graph);
 		
-		toTest.removeVertices(3);
+		toTest.removeEdges(3);
 		
 		assertEquals(10, graph.getEdges());
 		assertEquals(8, toTest.getClustersGraph().getEdges());

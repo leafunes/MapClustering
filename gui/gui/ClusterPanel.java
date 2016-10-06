@@ -95,7 +95,13 @@ public class ClusterPanel  extends JPanel{
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
 		        if(e.getButton() == MouseEvent.BUTTON1){
-		    		
+		    		if(editPoints && toEdit != null){
+		    			
+		    			EditClusterPoints editor = new EditClusterPoints(clusters, toEdit);
+		    			editor.setVisible(true);
+		    			
+		    		}
+		    				
 		        }
 		    }
 		};
