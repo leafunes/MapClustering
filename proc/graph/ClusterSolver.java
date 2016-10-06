@@ -10,7 +10,7 @@ import map.Cluster;
 
 public class ClusterSolver {
 	
-	public static <T extends Graphable<T>> List<Cluster<T>> getClustersOf(MapGraph<T> map){
+	public static <T extends Distanciable<T>> List<Cluster<T>> getClustersOf(MapGraph<T> map){
 		
 		ArrayList<T> vertices = new ArrayList<>();
 		
@@ -42,7 +42,7 @@ public class ClusterSolver {
 		
 	}
 
-	public static <T extends Graphable<T>> void vecindarioOf(T e, MapGraph<T> map, Set<T> visited) {
+	public static <T extends Distanciable<T>> void vecindarioOf(T e, MapGraph<T> map, Set<T> visited) {
 
 		visited.add(e);
 		

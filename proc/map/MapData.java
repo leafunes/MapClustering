@@ -13,26 +13,16 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import graph.Graphable;
+import graph.Distanciable;
 
-
-
-public class MapData implements Iterable<MapPoint>{
+public class MapData <T extends Distanciable<T>> implements Iterable<T>{
 	
-	private ArrayList<MapPoint> points;
-	//private GrafoPesado grafo;
+	private ArrayList<T> points;
+	private Exportable<T> exportator;
 	
-	public MapData(){
+	public MapData(Exportable<T> exportator){
 		points = new ArrayList<>();
-		
-	}
-	
-	public MapData(ArrayList<MapPoint> points){
-		this();
-		
-		for (MapPoint point : points){
-			this.points.add(point);
-		}
+		this.exportator = exportator;
 		
 	}
 	
@@ -49,28 +39,22 @@ public class MapData implements Iterable<MapPoint>{
 		for (Object object : coords) {
 			
 			JSONObject coord = (JSONObject)object;
-			double lat = (double)coord.get("latitud");
-			double lon = (double)coord.get("longitud");
-			
-			MapPoint toAdd = new MapPoint(lat, lon);
-			this.addPoint(toAdd);
+			this.addPoint(exportator.fromJSON(coord));
 			
 		}
 		
 		
 	}
 	
+	@SuppressWarnings("unchecked") //Es realmente necesario
 	public void saveToFile(File file) throws IOException{
 		
 		JSONObject obj = new JSONObject();
 
 		JSONArray list = new JSONArray();
 		
-		for(MapPoint point : points){
-			JSONObject coord = new JSONObject();
-			coord.put("latitud", point.getLat());
-			coord.put("longitud", point.getLon());
-			list.add(coord);
+		for(T point : points){
+			list.add(exportator.toJSON(point));
 		}
 
 		obj.put("mapData", list);
@@ -83,61 +67,55 @@ public class MapData implements Iterable<MapPoint>{
 		
 	}
 	
-	public void addPoint(MapPoint point){
+	public void addPoint(T point){
 		
-		if(point != null){
-			
+		if(point != null)
 			points.add(point);
 			
-			if(points.size() >= 2){
-				//TODO
-			}
-		}
-		
 	}
 	
-	public void removePoint(MapPoint point){
+	public void removePoint(T point){
 		
 		this.points.remove(point);
 		
 	}
 	
-	public void removeClosestTo(MapPoint other){
+	public void removeClosestTo(T other){
 		
-		MapPoint toRemove = this.closestTo(other);
+		T toRemove = this.closestTo(other);
 		if (other.distanceTo(toRemove) < 10E-3)
 			removePoint(toRemove);
 		
 	}
 	
-	public MapPoint closestTo(MapPoint other){
+	public T closestTo(T other){
 		
 		if(other == null) return null;
 		
-		if(points.size() > 0){
-			MapPoint ret = points.get(0);
-			double dist = Double.MAX_VALUE;
-			for (MapPoint mapPoint : points) {
-				if(mapPoint.distanceTo(other) < dist){
-					ret = mapPoint;
-					dist = mapPoint.distanceTo(other);
-				}
-			}
+		if(points.size() == 0) return null;
+		
+		T ret = points.get(0);
+		double dist = Double.MAX_VALUE;
+		
+		for (T point : points) if(point.distanceTo(other) < dist){
 			
+			ret = point;
+			dist = point.distanceTo(other);
 			
-			return ret;
 		}
-		return null;
+		
+		return ret;
+		
 		
 	}
 	
-	public List<MapPoint> getPoints(){
+	public List<T> getPoints(){
 		
 		if (points == null) return null;
 		
-		ArrayList<MapPoint> ret = new ArrayList<>();
+		ArrayList<T> ret = new ArrayList<>();
 		
-		for(MapPoint point: points) ret.add(point.clone());
+		for(T point: points) ret.add(exportator.clone(point));
 		
 		return ret;
 		
@@ -148,7 +126,7 @@ public class MapData implements Iterable<MapPoint>{
 	}
 
 	@Override
-	public Iterator<MapPoint> iterator() {
+	public Iterator<T> iterator() {
 		return this.points.iterator();
 	}
 		

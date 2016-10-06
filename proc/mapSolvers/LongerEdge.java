@@ -6,10 +6,10 @@ import graph.MapEdge;
 import graph.MapGraph;
 import graph.AgmSolver;
 import graph.ClusterSolver;
-import graph.Graphable;
+import graph.Distanciable;
 import map.Cluster;
 
-public class LongerEdge <E extends Graphable<E>> extends MapSolver<E>{ 
+public class LongerEdge <E extends Distanciable<E>> extends MapSolver<E>{ 
 	
 	MapGraph<E> graphAGM;
 	MapGraph<E> rawGraph;

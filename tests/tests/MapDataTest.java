@@ -15,8 +15,10 @@ import map.MapPoint;
 
 public class MapDataTest {
 	
-	private MapData mapaCon2(){
-		MapData map = new MapData();
+	MapPoint.Exportator exportator = new MapPoint.Exportator();
+	
+	private MapData<MapPoint> mapaCon2(){
+		MapData <MapPoint> map = new MapData<>(exportator);
 		
 		MapPoint point1 = new MapPoint(123.123, -456.458);
 		MapPoint point2 = new MapPoint(0.654, -10.19);
@@ -32,7 +34,7 @@ public class MapDataTest {
 	@Test
 	public void addPointTest() {
 		
-		MapData map = mapaCon2();
+		MapData<MapPoint> map = mapaCon2();
 		
 		List<MapPoint> points = map.getPoints();
 		
@@ -45,7 +47,7 @@ public class MapDataTest {
 	@Test
 	public void loadFromFileTest() {
 		
-		MapData map = new MapData();
+		MapData<MapPoint> map = new MapData<MapPoint>(exportator);
 		
 		File file = new File("tests" + File.separatorChar + "JsonTests"+File.separatorChar+"mapTest.json");
 		
@@ -67,7 +69,7 @@ public class MapDataTest {
 	@Test (expected = ParseException.class)
 	public void loadFromNotJSONTest() throws ParseException, IOException{
 		
-		MapData map = new MapData();
+		MapData <MapPoint> map = new MapData<>(exportator);
 		
 		File notJson = new File("tests" + File.separatorChar + "JsonTests"+File.separatorChar+"notAJson.txt");
 		
@@ -78,7 +80,7 @@ public class MapDataTest {
 	@Test (expected = IOException.class)
 	public void loadFromOtherJSONTest() throws ParseException, IOException{
 		
-		MapData map = new MapData();
+		MapData <MapPoint> map = new MapData<>(exportator);
 		
 		File notJson = new File("tests" + File.separatorChar + "JsonTests"+File.separatorChar+"otherJson.txt");
 		
@@ -89,7 +91,7 @@ public class MapDataTest {
 	@Test (expected = ClassCastException.class)
 	public void loadFromNotFormattedJsonTest() throws ParseException, IOException{
 		
-		MapData map = new MapData();
+		MapData <MapPoint> map = new MapData<>(exportator);
 		
 		File notJson = new File("tests" + File.separatorChar + "JsonTests"+File.separatorChar+"stringJson.json");
 		
@@ -100,7 +102,7 @@ public class MapDataTest {
 	@Test
 	public void saveToFileTest() {
 		
-		MapData map = mapaCon2();
+		MapData <MapPoint> map = mapaCon2();
 		
 		File file = new File("tests" + File.separatorChar + "JsonTests"+File.separatorChar+"mapTestOut.json");
 		
@@ -111,7 +113,7 @@ public class MapDataTest {
 			e.printStackTrace();
 		}
 		
-		MapData mapnew = new MapData();
+		MapData <MapPoint> mapnew = new MapData<>(exportator);
 		
 		try {
 			mapnew.loadFromFile(file);
@@ -131,7 +133,7 @@ public class MapDataTest {
 	
 	@Test
 	public void removePointTest(){
-		MapData map = mapaCon2();
+		MapData <MapPoint> map = mapaCon2();
 		
 		assertEquals(2, map.getPoints().size());
 		
@@ -155,7 +157,7 @@ public class MapDataTest {
 	
 	@Test 
 	public void removeClosetTo(){
-		MapData map = mapaCon2();
+		MapData<MapPoint> map = mapaCon2();
 		
 		MapPoint mapP = map.getPoints().get(0);
 		

@@ -15,7 +15,7 @@ import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
 
-import graph.Graphable;
+import graph.Distanciable;
 import map.Cluster;
 import map.MapPoint;
 import mapSolvers.LongerEdge;

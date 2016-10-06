@@ -7,7 +7,7 @@ import java.util.TreeSet;
 public class AgmSolver {
 	
 	// Algoritmo de Prim
-		public static <T extends Graphable<T>> MapGraph<T> getAGM(MapGraph<T> graph){
+		public static <T extends Distanciable<T>> MapGraph<T> getAGM(MapGraph<T> graph){
 			
 			if(graph == null || graph.getVertices() == 0) throw new IllegalArgumentException("Parámtero nulo");
 			
@@ -40,7 +40,7 @@ public class AgmSolver {
 		}
 
 		// Retorna la arista de menor peso entre un vertice visitado y uno no visitado
-		public static <T extends Graphable<T>> MapEdge<T> minorEdge(MapGraph<T> graph, Set<T> notVisited, Set<T> visited)
+		public static <T extends Distanciable<T>> MapEdge<T> minorEdge(MapGraph<T> graph, Set<T> notVisited, Set<T> visited)
 		{
 			MapEdge<T> ret = new MapEdge<>(graph.getVertex(0), graph.getVertex(0), Double.MAX_VALUE);
 			

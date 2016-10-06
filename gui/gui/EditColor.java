@@ -12,7 +12,7 @@ import map.Cluster;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
-import graph.Graphable;
+import graph.Distanciable;
 
 import javax.swing.JButton;
 import javax.swing.ComboBoxModel;
@@ -30,7 +30,7 @@ public class EditColor extends JDialog{
 	final Color[] colorRefs = {Color.RED, Color.YELLOW, Color.BLUE, Color.green, Color.cyan, Color.magenta, Color.black, Color.orange, Color.pink, Color.white};
 	final String[] colorStrings = {"Rojo", "Amarillo", "Azul", "Verde", "Cian ", "Magenta", "Negro", "Naranja", "Rosa", "Blanco"};
 	
-	public <E extends Graphable<E>> EditColor (final List< Cluster<E>>clusters){
+	public <E extends Distanciable<E>> EditColor (final List< Cluster<E>>clusters){
 		
 		getContentPane().setLayout(null);
 		super.setBounds(0, 0, 185, 270);
@@ -70,7 +70,7 @@ public class EditColor extends JDialog{
 		getContentPane().add(aceptarBtn);
 	}
 	
-	private <E extends Graphable<E>> void initComboBox(final List< Cluster<E>>clusters){
+	private <E extends Distanciable<E>> void initComboBox(final List< Cluster<E>>clusters){
 		
 		String[] items = generateItems(clusters);
 		
@@ -103,7 +103,7 @@ public class EditColor extends JDialog{
 		
 	}
 
-	private <E extends Graphable<E>> String[] generateItems(final List<Cluster<E>> clusters) {
+	private <E extends Distanciable<E>> String[] generateItems(final List<Cluster<E>> clusters) {
 		String [] items= new String  [clusters.size()];
 		
 		for (int i = 0; i < clusters.size(); i++) {
@@ -112,7 +112,7 @@ public class EditColor extends JDialog{
 		return items;
 	}
 	
-	private <E extends Graphable<E>> void actualizeColor(List <Cluster<E>> list){
+	private <E extends Distanciable<E>> void actualizeColor(List <Cluster<E>> list){
 		
 		int selectedCluster = boxClusters.getSelectedIndex();
 		int selectedColor = boxColors.getSelectedIndex();

@@ -1,33 +1,87 @@
 package map;
 
+import org.json.simple.JSONObject;
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 
-import graph.Graphable;
+import graph.Distanciable;
 
-public class MapPoint implements Graphable<MapPoint>{
+public class MapPoint implements Distanciable<MapPoint>{
+	
+	public static class Exportator implements Exportable<MapPoint>{
+
+		@Override
+		public MapPoint fromJSON(JSONObject obj) {
+
+			double lat = (double)obj.get("latitud");
+			double lon = (double)obj.get("longitud");
+			
+			return new MapPoint(lat, lon);
+		}
+
+		@SuppressWarnings("unchecked") //Es realmente necesario
+		@Override
+		public JSONObject toJSON(MapPoint obj) {
+			
+			JSONObject ret = new JSONObject();
+			ret.put("latitud", obj.getLat());
+			ret.put("longitud", obj.getLon());
+			
+			return ret;
+		}
+
+		@Override
+		public MapPoint clone(MapPoint other) {
+			return other.clone();
+		}
+
+		
+	}
 	
 	private double lat;
 	private double lon;
 	
 	private final float EARTH_RAD = 6371;
 	
+	public MapPoint(){
+		
+	}
+	
 	public MapPoint(double lat, double lon) {
 		this.lat = lat;
 		this.lon = lon;
 	}
 	
+	
 	public double getLat(){
 		return lat;
 	}
 	
+	
 	public double getLon(){
 		return lon;
+	}
+	
+	
+	public void setLat(double lat) {
+		this.lat = lat;
+		
+	}
+
+	
+	public void setLon(double lon) {
+		this.lon = lon;
+		
 	}
 	
 	public MapPoint clone(){
 		MapPoint ret = new MapPoint(lat,lon);
 		return ret;
 	}
+	
+	public Coordinate toCoordinate() {
+		return new Coordinate(lat, lon);
+	}
+
 	
 	@Override
 	public double distanceTo(MapPoint other) {
@@ -64,10 +118,6 @@ public class MapPoint implements Graphable<MapPoint>{
 		return "(" + "Lat: " + this.lat + ", Lon: " + this.lon + ")";
 	}
 
-	public Coordinate toCoordinate() {
-		return new Coordinate(lat, lon);
-	}
-
 	@Override
 	public int compareTo(MapPoint other) {
 		if (other == null) return 1;
@@ -81,6 +131,27 @@ public class MapPoint implements Graphable<MapPoint>{
 	    if(this.distanceTo(northPole) > other.distanceTo(northPole))return -1;
 	    
 	    return 0;
+	}
+
+	@SuppressWarnings("unchecked") //Es realmente necesario
+	public JSONObject tojSON(){
+		
+		JSONObject ret = new JSONObject();
+		ret.put("latitud", this.lat);
+		ret.put("longitud", this.lon);
+		
+		return ret;
+		
+		
+	}
+	
+	public MapPoint fromJSON(JSONObject Json){
+		
+		double coordX = (double)Json.get("latitud");
+		double coordY = (double)Json.get("longitud");
+		
+		return new MapPoint(coordX, coordY);
+		
 	}
 
 

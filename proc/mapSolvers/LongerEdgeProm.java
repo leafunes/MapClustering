@@ -4,12 +4,12 @@ import java.util.List;
 
 import graph.AgmSolver;
 import graph.ClusterSolver;
-import graph.Graphable;
+import graph.Distanciable;
 import graph.MapEdge;
 import graph.MapGraph;
 import map.Cluster;
 
-public class LongerEdgeProm <E extends Graphable<E>> extends MapSolver<E>{
+public class LongerEdgeProm <E extends Distanciable<E>> extends MapSolver<E>{
 	
 	MapGraph<E> graphAGM;
 	MapGraph<E> rawGraph;

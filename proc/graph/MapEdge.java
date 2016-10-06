@@ -1,6 +1,6 @@
 package graph;
 
-public class MapEdge <V extends Graphable<V>>{
+public class MapEdge <V extends Distanciable<V>>{
 	public V vertex1;
 	public V vertex2;		
 	public Double weight;

@@ -1,8 +1,8 @@
 package tests;
 
-import graph.Graphable;
+import graph.Distanciable;
 
-class GraphableInteger implements Graphable<GraphableInteger>{
+class GraphableInteger implements Distanciable<GraphableInteger>{
 	
 	int value;
 	

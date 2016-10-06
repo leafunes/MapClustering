@@ -29,16 +29,16 @@ public class EditClusterPoints extends JDialog{
 		
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("Destino");
 		buttonGroup.add(rdbtnNewRadioButton);
-		rdbtnNewRadioButton.setBounds(8, 155, 114, 23);
+		rdbtnNewRadioButton.setBounds(63, 155, 114, 23);
 		getContentPane().add(rdbtnNewRadioButton);
 		
 		JRadioButton rdbtnAsignarComo = new JRadioButton("Origen\n");
 		buttonGroup.add(rdbtnAsignarComo);
-		rdbtnAsignarComo.setBounds(8, 182, 114, 23);
+		rdbtnAsignarComo.setBounds(63, 181, 114, 23);
 		getContentPane().add(rdbtnAsignarComo);
 		
 		JLabel lblAsignarComo = new JLabel("Asignar como...");
-		lblAsignarComo.setBounds(12, 125, 110, 15);
+		lblAsignarComo.setBounds(63, 132, 110, 15);
 		getContentPane().add(lblAsignarComo);
 		
 		JButton btnOk = new JButton("Ok");

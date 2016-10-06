@@ -17,7 +17,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.SpinnerNumberModel;
 
-import graph.Graphable;
+import graph.Distanciable;
 import map.MapData;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -36,7 +36,7 @@ public class ClusterConfig extends JDialog{
 	private JSpinner spinner;
 	private JButton btnAceptar;
 
-	<E extends Graphable<E>> ClusterConfig(List<MapSolver<E>> list, List<E> pointList){
+	<E extends Distanciable<E>> ClusterConfig(List<MapSolver<E>> list, List<E> pointList){
 		getContentPane().setLayout(null);
 		this.setBounds(0, 0, 250, 300);
 		
@@ -79,7 +79,7 @@ public class ClusterConfig extends JDialog{
 		getContentPane().add(lblPorcentajeDeClusters);
 	}
 
-	private <E extends Graphable<E>> void initButton(final List<E> points) {
+	private <E extends Distanciable<E>> void initButton(final List<E> points) {
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.addMouseListener(new MouseAdapter() {
 			@Override
@@ -98,7 +98,7 @@ public class ClusterConfig extends JDialog{
 		btnAceptar.setBounds(86, 239, 91, 23);
 	}
 
-	private <E extends Graphable<E>> void initClusterCant(List<E> pointList) {
+	private <E extends Distanciable<E>> void initClusterCant(List<E> pointList) {
 		chckbxUsarLmite = new JCheckBox("Usar limite");
 		chckbxUsarLmite.setBounds(26, 91, 129, 23);
 		
@@ -133,7 +133,7 @@ public class ClusterConfig extends JDialog{
 		});
 	}
 
-	private <E extends Graphable<E>> void initComboBox(final List<MapSolver<E>> list) {
+	private <E extends Distanciable<E>> void initComboBox(final List<MapSolver<E>> list) {
 		comboBox = new JComboBox<>();
 		comboBox.setBounds(26, 44, 193, 22);
 

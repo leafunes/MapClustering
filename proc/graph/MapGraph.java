@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class MapGraph <V extends Graphable<V>>{
+public class MapGraph <V extends Distanciable<V>>{
 
 	HashMap<V, HashSet<V> > table;
 	private ArrayList<V> refList;
