@@ -44,7 +44,9 @@ public class MapPanel extends JPanel{
 	private boolean addMarkerFromMap;
 	private boolean removeMarker;
 	
-	MapData mapData;
+	MapData<MapPoint> mapData;
+	
+	MapPoint.Exportator exportator = new MapPoint.Exportator();
 	
 	private GetCoord getCoordWin;
 	
@@ -90,7 +92,7 @@ public class MapPanel extends JPanel{
 	}
 	
 	private void newMap() {
-		mapData = new MapData();
+		mapData = new MapData<>(exportator);
 		map.removeAllMapMarkers();
 	}
 	
@@ -149,7 +151,7 @@ public class MapPanel extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				mapData = new MapData();
+				mapData = new MapData<>(exportator);
 				map.removeAllMapMarkers();
 				
 			}

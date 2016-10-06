@@ -52,6 +52,8 @@ public class ClusterPanel  extends JPanel{
 	
 	MapSolver<MapPoint> selectedSolver;
 	
+	MapPoint.Exportator exportator = new MapPoint.Exportator();
+	
 	int cantClusters;
 	
 	ClusterPanel(Component parent){
@@ -222,7 +224,7 @@ public class ClusterPanel  extends JPanel{
 		if(isSolverOk()){
 			if(!hasActualized) actualizeData();
 			try{
-				clusters = selectedSolver.solveMap(cantClusters);
+				clusters = selectedSolver.solveMap(cantClusters, exportator);
 			}catch(IllegalArgumentException e){
 				actualizeData();
 			}
