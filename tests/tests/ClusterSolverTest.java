@@ -27,6 +27,8 @@ public class ClusterSolverTest {
 	GraphableInteger a4 = new GraphableInteger(4);
 	GraphableInteger a5 = new GraphableInteger(1);
 	GraphableInteger a6 = new GraphableInteger(13);
+	
+	GraphableInteger.Exportador exportador = new GraphableInteger.Exportador();
 
 	private MapGraph<GraphableInteger> map(){
 		
@@ -73,11 +75,10 @@ public class ClusterSolverTest {
 	public void testGetClustersOf() {
 		MapGraph<GraphableInteger> map = map();
 		
-		List<Cluster<GraphableInteger>> clusters = ClusterSolver.getClustersOf(map);
+		List<Cluster<GraphableInteger>> clusters = ClusterSolver.getClustersOf(map,exportador);
 		
 		assertEquals(2, clusters.size());
-		
-		Cluster<GraphableInteger> c1 = new Cluster<>();
+		Cluster<GraphableInteger> c1 = new Cluster<>(exportador);
 		c1.addPoint(a1);
 		c1.addPoint(a2);
 		c1.addPoint(a5);

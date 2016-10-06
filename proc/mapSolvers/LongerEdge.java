@@ -8,6 +8,7 @@ import graph.AgmSolver;
 import graph.ClusterSolver;
 import graph.Distanciable;
 import map.Cluster;
+import map.Exportable;
 
 public class LongerEdge <E extends Distanciable<E>> extends MapSolver<E>{ 
 	
@@ -21,13 +22,13 @@ public class LongerEdge <E extends Distanciable<E>> extends MapSolver<E>{
 	}
 	
 	@Override
-	public List<Cluster<E>> solveMap(int cantClusters){
+	public List<Cluster<E>> solveMap(int cantClusters, Exportable<E> exportador){
 		
 		if(this.mapPoints.isEmpty())throw new IllegalArgumentException("La lista de puntos esta vacia");
 		
 		removeVertices(cantClusters);
 		
-		return ClusterSolver.getClustersOf(clustersGraph);
+		return ClusterSolver.getClustersOf(clustersGraph,exportador);
 		
 	}
 	
@@ -97,6 +98,7 @@ public class LongerEdge <E extends Distanciable<E>> extends MapSolver<E>{
 	public void setClustersGraph(MapGraph<E> clustersGraph) {
 		this.clustersGraph = clustersGraph;
 	}
+
 
 
 }

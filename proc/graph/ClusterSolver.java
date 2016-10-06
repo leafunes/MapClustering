@@ -7,10 +7,11 @@ import java.util.Stack;
 import java.util.TreeSet;
 
 import map.Cluster;
+import map.Exportable;
 
 public class ClusterSolver {
 	
-	public static <T extends Distanciable<T>> List<Cluster<T>> getClustersOf(MapGraph<T> map){
+	public static <T extends Distanciable<T>> List<Cluster<T>> getClustersOf(MapGraph<T> map, Exportable<T> exportador){
 		
 		ArrayList<T> vertices = new ArrayList<>();
 		
@@ -22,7 +23,7 @@ public class ClusterSolver {
 		
 		while(!vertices.isEmpty()){
 			
-			Cluster<T> cluster = new Cluster<T>();
+			Cluster<T> cluster = new Cluster<T>(exportador);
 			
 			Set<T> vecindario = new TreeSet<>();
 			

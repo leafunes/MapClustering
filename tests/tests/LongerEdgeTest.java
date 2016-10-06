@@ -23,6 +23,8 @@ public class LongerEdgeTest {
 	GraphableInteger i5 = new GraphableInteger(5);
 	GraphableInteger i13 = new GraphableInteger(13);
 	
+	GraphableInteger.Exportador exportador = new GraphableInteger.Exportador();
+	
 	private List<GraphableInteger> getList(){
 		List<GraphableInteger> ret = new ArrayList<>();
 		ret.add(i1);
@@ -98,7 +100,7 @@ public class LongerEdgeTest {
 		
 		LongerEdge<GraphableInteger> toTest = new LongerEdge<GraphableInteger>();
 		
-		toTest.solveMap(2);
+		toTest.solveMap(2, exportador);
 		
 		
 	}
@@ -112,7 +114,7 @@ public class LongerEdgeTest {
 		
 		toTest.setGraphAGM(graph);
 		
-		toTest.solveMap(1000);
+		toTest.solveMap(1000, exportador);
 		
 	}
 	
@@ -124,7 +126,7 @@ public class LongerEdgeTest {
 		toTest.actualizeData(getList());
 		
 		List <Cluster<GraphableInteger>> expected = new ArrayList<>();
-		Cluster<GraphableInteger> c1 = new Cluster<>();
+		Cluster<GraphableInteger> c1 = new Cluster<>(exportador);
 		
 		c1.addPoint(i1);
 		c1.addPoint(i3);
@@ -132,12 +134,12 @@ public class LongerEdgeTest {
 		c1.addPoint(i8);
 		expected.add(c1);
 		
-		Cluster<GraphableInteger> c2 = new Cluster<>();
+		Cluster<GraphableInteger> c2 = new Cluster<>(exportador);
 		
 		c2.addPoint(i13);
 		expected.add(c2);
 		
-		List <Cluster<GraphableInteger>> clusters = toTest.solveMap(2);
+		List <Cluster<GraphableInteger>> clusters = toTest.solveMap(2, exportador);
 		
 		assertEquals(2,clusters.size());
 

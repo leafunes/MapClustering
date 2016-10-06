@@ -94,7 +94,7 @@ public class Cluster <E extends Distanciable<E>> implements Iterable<E>{
 			
 			Cluster<E> toAdd = new Cluster<>(exportador);
 			
-			JSONArray array = (JSONArray) jsonObject.get("mapCluster"+i);
+			JSONArray array = (JSONArray) jsonObject.get("clusterData"+i);
 			
 			toAdd.fromJsonArray(array);
 			
