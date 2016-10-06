@@ -133,26 +133,5 @@ public class MapPoint implements Distanciable<MapPoint>{
 	    return 0;
 	}
 
-	@SuppressWarnings("unchecked") //Es realmente necesario
-	public JSONObject tojSON(){
-		
-		JSONObject ret = new JSONObject();
-		ret.put("latitud", this.lat);
-		ret.put("longitud", this.lon);
-		
-		return ret;
-		
-		
-	}
-	
-	public MapPoint fromJSON(JSONObject Json){
-		
-		double coordX = (double)Json.get("latitud");
-		double coordY = (double)Json.get("longitud");
-		
-		return new MapPoint(coordX, coordY);
-		
-	}
-
 
 }

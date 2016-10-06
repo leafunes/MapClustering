@@ -148,7 +148,7 @@ public class ClusterPanel  extends JPanel{
 			public void actionPerformed(ActionEvent arg0) {
 				
 				if(isListOk() && isSolverOk()  && isClustersOk()){
-					System.out.println(clusters.size());
+					
 					editColor = new EditColor(clusters);
 					editColor.setVisible(true);
 					plotPoints();
