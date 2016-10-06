@@ -27,8 +27,8 @@ public class EditColor extends JDialog{
 	
 	private JComboBox<String> boxClusters;
 	private JComboBox<String> boxColors;
-	final Color[] colorRefs = {Color.RED, Color.YELLOW, Color.BLUE, Color.green, Color.cyan, Color.magenta, Color.black, Color.orange, Color.pink, Color.white};
-	final String[] colorStrings = {"Rojo", "Amarillo", "Azul", "Verde", "Cian ", "Magenta", "Negro", "Naranja", "Rosa", "Blanco"};
+	final Color[] colorRefs = {Color.RED, Color.YELLOW, Color.BLUE, Color.green, Color.cyan, Color.black, Color.orange, Color.pink, Color.white};
+	final String[] colorStrings = {"Rojo", "Amarillo", "Azul", "Verde", "Cian ", "Negro", "Naranja", "Rosa", "Blanco"};
 	
 	public <E extends Distanciable<E>> EditColor (final List< Cluster<E>>clusters){
 		

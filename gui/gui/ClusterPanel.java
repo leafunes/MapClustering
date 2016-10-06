@@ -11,6 +11,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.openstreetmap.gui.jmapviewer.Coordinate;
+import org.openstreetmap.gui.jmapviewer.DefaultMapController;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
@@ -35,6 +37,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseMotionAdapter;
 
 public class ClusterPanel  extends JPanel{
 	
@@ -42,6 +45,7 @@ public class ClusterPanel  extends JPanel{
 	private EditColor editColor;
 	private ClusterConfig clusterConfig;
 	private boolean hasActualized;
+	private boolean editPoints;
 
 	LongerEdge<MapPoint> solverLongerEdge;
 	LongerEdgeProm<MapPoint> solverLongerEdgeProm;
@@ -57,6 +61,7 @@ public class ClusterPanel  extends JPanel{
 	int cantClusters;
 	
 	ClusterPanel(Component parent){
+		
 		setLayout(null);
 		super.setBounds(parent.getBounds());
 		
@@ -69,6 +74,30 @@ public class ClusterPanel  extends JPanel{
 		mapSolversList.add(solverLongerEdgeProm);
 		
 		map.setBounds(new Rectangle(0, 21, 793, 527));
+		
+		new DefaultMapController(map){
+			MapPoint toEdit = null;
+			
+			@Override
+			public void mouseMoved(MouseEvent e){
+				if(editPoints){
+					Coordinate coord = map.getPosition(e.getX(), e.getY());
+					
+					MapPoint point = new MapPoint(coord.getLat(), coord.getLon());
+					
+					toEdit = Cluster.getClosestToList(clusters, point, 5E-3);
+					selectPoint(toEdit);
+				}
+			}
+
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        if(e.getButton() == MouseEvent.BUTTON1){
+		    		
+		        }
+		    }
+		};
+		
 		this.add(map);
 		
 		initMenu();
@@ -133,11 +162,34 @@ public class ClusterPanel  extends JPanel{
 		});
 		menuBar.add(btnActualizar);
 		
-		JToggleButton btnEditarClusters = new JToggleButton("Editar Clusters");
+		final JToggleButton btnEditarClusters = new JToggleButton("Editar Clusters");
+		btnEditarClusters.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				editPoints = btnEditarClusters.isSelected();
+				plotPoints();
+				
+			}
+		});
 		menuBar.add(btnEditarClusters);
 		
 		JToggleButton tglbtnMostrarCamino = new JToggleButton("Mostrar Camino");
 		menuBar.add(tglbtnMostrarCamino);
+	}
+	
+	public void selectPoint(MapPoint toSelect){
+
+		plotPoints();
+		
+		if(toSelect != null){
+		
+			MapMarker marker = new MapMarkerDot(toSelect.getLat(), toSelect.getLon());
+			marker.getStyle().setColor(Color.MAGENTA);
+			marker.getStyle().setBackColor(Color.MAGENTA);
+			
+			map.addMapMarker(marker);
+		}
+		
 	}
 	
 	public void actualizePoints(List<MapPoint> list){

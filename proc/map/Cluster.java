@@ -47,11 +47,32 @@ public class Cluster <E extends Distanciable<E>> implements Iterable<E>{
 		
 	}
 	
-	public void loadFromFile(File file){
+	public static <E extends Distanciable<E>> E getClosestToList(List <Cluster<E>> list, E toExam){
+		
+		return getClosestToList(list, toExam, Double.MAX_VALUE);
 		
 	}
 	
-	public void saveToFile(File file){
+	public static <E extends Distanciable<E>> E getClosestToList(List <Cluster<E>> list, E toExam, double limit){
+		
+		double dist = Double.MAX_VALUE;
+		E closest = null;
+		
+		for (Cluster<E> cluster : list) {
+			for (E actualPoint : cluster) {
+				double actualDist = actualPoint.distanceTo(toExam);
+				
+				if(actualDist < dist){
+					dist = actualDist;
+					closest = actualPoint;
+				}
+			}
+		}
+		
+		if(dist <= limit) return closest;
+		
+		return null;
+		
 		
 	}
 	
@@ -64,7 +85,6 @@ public class Cluster <E extends Distanciable<E>> implements Iterable<E>{
 		int index = 0;
 		
 		for (Cluster<E> cluster : list) {
-			
 			JSONArray array = new JSONArray();
 			
 			array = cluster.toJsonArray();
