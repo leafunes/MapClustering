@@ -80,15 +80,15 @@ public class MapData <T extends Distanciable<T>> implements Iterable<T>{
 		
 	}
 	
-	public void removeClosestTo(T other){
+	public void removeClosestTo(T other, double limit){
 		
 		T toRemove = this.closestTo(other);
-		if (other.distanceTo(toRemove) < 10E-3)
+		if (other.distanceTo(toRemove) < limit)
 			removePoint(toRemove);
 		
 	}
 	
-	public T closestTo(T other){
+	public T closestTo (T other, double limit){
 		
 		if(other == null) return null;
 		
@@ -104,7 +104,16 @@ public class MapData <T extends Distanciable<T>> implements Iterable<T>{
 			
 		}
 		
-		return ret;
+		if(dist <= limit) return ret;
+		
+		return null;
+		
+		
+	}
+	
+	public T closestTo(T other){
+		
+		return closestTo(other, Double.MAX_VALUE);
 		
 		
 	}

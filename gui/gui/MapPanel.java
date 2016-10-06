@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Rectangle;
@@ -52,6 +53,8 @@ public class MapPanel extends JPanel{
 	
 	private File file;
 	
+	private final double CLOSEST_LIMIT = 2E-1;
+	
 	public MapPanel(Component parent){
 		
 		super.setBounds(parent.getBounds());
@@ -74,16 +77,32 @@ public class MapPanel extends JPanel{
 		map = new JMapViewer();
 		
 		new DefaultMapController(map){
+			
+			@Override
+			public void mouseMoved(MouseEvent e){
+				
+				if(removeMarker){
 
-			    @Override
-			    public void mouseClicked(MouseEvent e) {
-			        if(e.getButton() == MouseEvent.BUTTON1){
-			    		Coordinate coord = map.getPosition(e.getX(),e.getY());
-			    		
-			        	if(addMarkerFromMap) addPoint(coord);
-			        	if(removeMarker) removePoint(coord);
-			        }
-			    }
+		    		Coordinate coord = map.getPosition(e.getX(),e.getY());
+					plotPointToRemove(coord);
+				}
+				
+				if(addMarkerFromMap){
+
+		    		Coordinate coord = map.getPosition(e.getX(),e.getY());
+					plotPointToAdd(coord);
+				}
+			}
+
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        if(e.getButton() == MouseEvent.BUTTON1){
+		    		Coordinate coord = map.getPosition(e.getX(),e.getY());
+		    		
+		        	if(addMarkerFromMap) addPoint(coord);
+		        	if(removeMarker) removePoint(coord);
+		        }
+		    }
 			};
 			
 		map.setBounds(new Rectangle(0, 21, 793, 527));
@@ -93,7 +112,7 @@ public class MapPanel extends JPanel{
 	
 	private void newMap() {
 		mapData = new MapData<>(exportator);
-		map.removeAllMapMarkers();
+		actualizePoints();
 	}
 	
 	
@@ -152,7 +171,7 @@ public class MapPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				mapData = new MapData<>(exportator);
-				map.removeAllMapMarkers();
+				actualizePoints();
 				
 			}
 		});
@@ -172,6 +191,8 @@ public class MapPanel extends JPanel{
 		tglbtnAgrega.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
+				actualizePoints();
 				
 				if (tglbtnRemove.isSelected()){
 					tglbtnRemove.setSelected(false);
@@ -229,6 +250,38 @@ public class MapPanel extends JPanel{
 		
 	}
 	
+	private void plotPointToRemove(Coordinate coord){
+
+		MapPoint point = new MapPoint(coord.getLat(), coord.getLon());
+		
+		MapPoint closest = mapData.closestTo(point, CLOSEST_LIMIT);
+		
+		actualizePoints();
+		
+		if(closest != null){
+			
+			Coordinate closestCoord = new Coordinate(closest.getLat(), closest.getLon());
+			
+			MapMarkerDot marker = new MapMarkerDot(closestCoord);
+			marker.setBackColor(Color.magenta);
+			marker.setColor(Color.magenta);
+			
+			map.addMapMarker(marker);
+			
+		}
+	}
+	
+	private void plotPointToAdd(Coordinate coord){
+		
+		actualizePoints();
+		
+		MapMarkerDot marker = new MapMarkerDot(coord);
+			
+		map.addMapMarker(marker);
+			
+		
+	}
+	
 	private void addPoint(Coordinate coord){
 		
 		mapData.addPoint(new MapPoint(coord.getLat(), coord.getLon()));
@@ -242,10 +295,9 @@ public class MapPanel extends JPanel{
 		
 		MapPoint toDelete = new MapPoint(coord.getLat(), coord.getLon());
 		
-		mapData.removeClosestTo(toDelete);
+		mapData.removeClosestTo(toDelete, CLOSEST_LIMIT);
 		
-		map.removeAllMapMarkers();
-		loadMapPoints();
+		actualizePoints();
 		
 	}
 	
@@ -297,5 +349,11 @@ public class MapPanel extends JPanel{
 			
 		}
 		
+	}
+	
+	private void actualizePoints(){
+		
+		map.removeAllMapMarkers();
+		loadMapPoints();
 	}
 }

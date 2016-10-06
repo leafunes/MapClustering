@@ -55,6 +55,12 @@ public class Cluster <E extends Distanciable<E>> implements Iterable<E>{
 	
 	public static <E extends Distanciable<E>> E getClosestToList(List <Cluster<E>> list, E toExam, double limit){
 		
+		if(list == null)
+			throw new IllegalArgumentException("La lista es nula");
+		
+		if(toExam == null)
+			throw new IllegalArgumentException("El argumento a examinar es nulo");
+		
 		double dist = Double.MAX_VALUE;
 		E closest = null;
 		

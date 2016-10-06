@@ -56,6 +56,8 @@ public class ClusterPanel  extends JPanel{
 	
 	MapSolver<MapPoint> selectedSolver;
 	
+	private final double CLOSEST_LIMIT = 5E-2;
+	
 	MapPoint.Exportator exportator = new MapPoint.Exportator();
 	
 	int cantClusters;
@@ -85,7 +87,7 @@ public class ClusterPanel  extends JPanel{
 					
 					MapPoint point = new MapPoint(coord.getLat(), coord.getLon());
 					
-					toEdit = Cluster.getClosestToList(clusters, point, 5E-3);
+					toEdit = Cluster.getClosestToList(clusters, point, CLOSEST_LIMIT);
 					selectPoint(toEdit);
 				}
 			}
