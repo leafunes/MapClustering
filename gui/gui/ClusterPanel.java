@@ -48,29 +48,33 @@ import java.io.IOException;
 
 public class ClusterPanel  extends JPanel{
 	
+	private static final long serialVersionUID = 1L;
+
 	private JMapViewer map;
+	private File file;
+	private int cantClusters;
+	
+	//Pop-ups windows
 	private EditColor editColor;
 	private ClusterConfig clusterConfig;
 	private JFileChooser fileChooser;
+	
+	//Variables de estados
 	private boolean hasActualized;
 	private boolean editPoints;
-	private File file;
+	
+	//Constantes
 	private final Random gen = new Random();
+	private final double CLOSEST_LIMIT = 5E-2;
 
-	LongerEdge<MapPoint> solverLongerEdge;
-	LongerEdgeProm<MapPoint> solverLongerEdgeProm;
+	//Generics
 	List <MapPoint> pointList;
 	List<MapSolver<MapPoint>> mapSolversList;
-	
 	List<Cluster<MapPoint>> clusters;
-	
 	MapSolver<MapPoint> selectedSolver;
 	
-	private final double CLOSEST_LIMIT = 5E-2;
-	
+	//Exportators
 	MapPoint.Exportator exportator = new MapPoint.Exportator();
-	
-	int cantClusters;
 	
 	//-----------------------------------------------//
 	
@@ -79,19 +83,21 @@ public class ClusterPanel  extends JPanel{
 		setLayout(null);
 		super.setBounds(parent.getBounds());
 		
-		solverLongerEdge = new LongerEdge<>();
-		solverLongerEdgeProm = new LongerEdgeProm<>();
+		LongerEdge<MapPoint> solverLongerEdge = new LongerEdge<>();
+		LongerEdgeProm<MapPoint> solverLongerEdgeProm = new LongerEdgeProm<>();
+
+		mapSolversList = new ArrayList<>();
+		mapSolversList.add(solverLongerEdge);
+		mapSolversList.add(solverLongerEdgeProm);
+		
 		map = new JMapViewer();
+		map.setBounds(new Rectangle(0, 21, 793, 527));
 		
 		fileChooser = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Cluster Files *.clus", "clus");
 		fileChooser.setFileFilter(filter);
 		
-		mapSolversList = new ArrayList<>();
-		mapSolversList.add(solverLongerEdge);
-		mapSolversList.add(solverLongerEdgeProm);
 		
-		map.setBounds(new Rectangle(0, 21, 793, 527));
 		
 		new DefaultMapController(map){
 			MapPoint toEdit = null;
@@ -294,6 +300,10 @@ public class ClusterPanel  extends JPanel{
 		
 		map.removeAllMapMarkers();
 		
+		Coordinate center = getPromMapData();
+		
+		map.setDisplayPositionByLatLon(center.getLat(), center.getLon(), 10);
+		
 		for (Cluster<MapPoint> cluster : clusters) {
 			
 			for(MapPoint point: cluster){
@@ -307,6 +317,16 @@ public class ClusterPanel  extends JPanel{
 				
 			}
 		}
+		
+	}
+	
+	private Coordinate getPromMapData(){
+		//Este metodo no deberia estar aca, deberia estar en MapData
+		//Pero queda mucho mas comodo que quede aqui.
+		
+		if(pointList.size() == 0) return map.getPosition();
+		
+		return MapPoint.listToMedianCoordinate(pointList);
 		
 	}
 	
@@ -376,6 +396,9 @@ public class ClusterPanel  extends JPanel{
 	private Color genRandomColor(){
 		
 		return new Color(gen.nextInt(127)*2, gen.nextInt(127)*2, gen.nextInt(127)*2);
+		//Se utilizan valores de 0 a 127, y luego se multiplica por dos para que 
+		//los valores esten mas espaciados entre si, y no aparezcan colores muy
+		//"juntos" o "parecidos" segun ojo humano
 		
 	}
 }

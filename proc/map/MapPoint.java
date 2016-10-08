@@ -1,5 +1,7 @@
 package map;
 
+import java.util.List;
+
 import org.json.simple.JSONObject;
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 
@@ -81,7 +83,36 @@ public class MapPoint implements Distanciable<MapPoint>{
 	public Coordinate toCoordinate() {
 		return new Coordinate(lat, lon);
 	}
+	
+	
+	public static Coordinate listToMedianCoordinate(List<MapPoint> list){
+		
+		double x = 0;
+        double y = 0;
+        double z = 0;
 
+        for (MapPoint mapPoint : list) {
+			
+            double latitude = mapPoint.getLat() * Math.PI / 180;
+            double longitude = mapPoint.getLon() * Math.PI / 180;
+
+            x += Math.cos(latitude) * Math.cos(longitude);
+            y += Math.cos(latitude) * Math.sin(longitude);
+            z += Math.sin(latitude);
+        }
+
+        double total = list.size();
+
+        x = x / total;
+        y = y / total;
+        z = z / total;
+
+        double centralLongitude = Math.atan2(y, x);
+        double centralSquareRoot = Math.sqrt(x * x + y * y);
+        double centralLatitude = Math.atan2(z, centralSquareRoot);
+
+        return new Coordinate(centralLatitude * 180 / Math.PI, centralLongitude * 180 / Math.PI);
+	}
 	
 	@Override
 	public double distanceTo(MapPoint other) {

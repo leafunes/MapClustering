@@ -112,10 +112,13 @@ public class MapData <T extends Distanciable<T>> implements Iterable<T>{
 	}
 	
 	public T closestTo(T other){
-		
+
 		return closestTo(other, Double.MAX_VALUE);
 		
-		
+	}
+	
+	public int size(){
+		return this.points.size();
 	}
 	
 	public List<T> getPoints(){

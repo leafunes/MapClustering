@@ -156,6 +156,20 @@ public class Cluster <E extends Distanciable<E>> implements Iterable<E>{
 		
 	}
 	
+	public static <E extends Distanciable<E>> MapData<E> listToMapData(List<Cluster<E>> list, Exportable<E> exportador){
+		
+		MapData<E> ret = new MapData<E>(exportador);
+		
+		for (Cluster<E> cluster : list) {
+			for (E distanciable : cluster) {
+				ret.addPoint(distanciable);
+			}
+		}
+		
+		return ret;
+		
+	}
+	
 	@SuppressWarnings("unchecked") //Es realmente necesario
 	protected JSONArray toJsonArray(){
 		

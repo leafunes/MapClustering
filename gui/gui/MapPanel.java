@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.swing.JFileChooser;
@@ -35,25 +36,22 @@ import javax.swing.JToggleButton;
 
 public class MapPanel extends JPanel{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
+	private File file;
+	
 	private JFileChooser fileChooser;
 	private JMapViewer map;
+	private GetCoord getCoordWin;
 
 	private boolean addMarkerFromMap;
 	private boolean removeMarker;
 	
 	MapData<MapPoint> mapData;
 	
-	MapPoint.Exportator exportator = new MapPoint.Exportator();
-	
-	private GetCoord getCoordWin;
-	
-	private File file;
-	
 	private final double CLOSEST_LIMIT = 2E-1;
+	
+	MapPoint.Exportator exportator = new MapPoint.Exportator();
 	
 	public MapPanel(Component parent){
 		
@@ -114,8 +112,6 @@ public class MapPanel extends JPanel{
 		mapData = new MapData<>(exportator);
 		actualizePoints();
 	}
-	
-	
 
 	private void menuInit() {
 		JMenuBar mapMenu = new JMenuBar();
@@ -330,13 +326,13 @@ public class MapPanel extends JPanel{
 	
 	private void loadMapPoints() {
 		
-		
 		List<MapPoint> points = mapData.getPoints();
 		
+		Coordinate center = getPromMapData();
+		
+		map.setDisplayPositionByLatLon(center.getLat(), center.getLon(), 10);
+		
 		for(MapPoint point : points){
-			
-			//TODO
-			//map.setDisplayPositionByLatLon(point.getLat(), point.getLon(), 10);
 			
 			Coordinate coord = new Coordinate(point.getLat(), point.getLon());
 			
@@ -348,9 +344,20 @@ public class MapPanel extends JPanel{
 		
 	}
 	
+	private Coordinate getPromMapData(){
+		//Este metodo no deberia estar aca, deberia estar en MapData
+		//Pero queda mucho mas comodo que quede aqui.
+		
+		if(mapData.size() == 0) return map.getPosition();
+		
+		return MapPoint.listToMedianCoordinate(mapData.getPoints());
+		
+	}
+	
 	private void actualizePoints(){
 		
 		map.removeAllMapMarkers();
 		loadMapPoints();
 	}
+	
 }
