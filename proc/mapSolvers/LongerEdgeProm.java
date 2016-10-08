@@ -31,7 +31,6 @@ public class LongerEdgeProm <E extends Distanciable<E>> extends MapSolver<E>{
 		
 		return ClusterSolver.getClustersOf(clustersGraph, exportador);
 		
-		
 	}
 	
 	@Override
@@ -85,7 +84,6 @@ public class LongerEdgeProm <E extends Distanciable<E>> extends MapSolver<E>{
 				longerRelDist = actualRelDist;
 				longerEdge = actualEdge;
 			}
-
 			
 		}
 

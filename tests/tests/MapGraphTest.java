@@ -232,5 +232,33 @@ public class MapGraphTest {
 		assertTrue(expected.containsAll(graph.getEdgesList()));
 		
 	}
+	
+	@Test
+	public void getNehiEdgesTest(){
+		MapGraph<MapPoint> graph = generateMap();
+		
+		MapEdge<MapPoint> e1 = new MapEdge<>(p1, p2);
+		MapEdge<MapPoint> e2 = new MapEdge<>(p1, p3);
+		MapEdge<MapPoint> e3 = new MapEdge<>(p1, p4);
+		MapEdge<MapPoint> e4 = new MapEdge<>(p4, p3);
+		
+		graph.addEdge(e1);
+		graph.addEdge(e2);
+		graph.addEdge(e3);
+		graph.addEdge(e4);
+		
+		List<MapEdge<MapPoint>> nehiList = graph.getNehiEdges(e1);
+		List<MapEdge<MapPoint>> expected = new ArrayList<>();
+		
+		expected.add(e2);
+		expected.add(e3);
+		
+		assertEquals(2, nehiList.size());
+		
+		assertTrue(nehiList.containsAll(expected));
+		assertTrue(expected.containsAll(nehiList));
+		
+		assertFalse(nehiList.contains(e4));
+	}
 
 }
