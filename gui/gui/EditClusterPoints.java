@@ -4,6 +4,8 @@ import graph.Distanciable;
 
 import java.awt.Component;
 import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JDialog;
@@ -19,12 +21,11 @@ import javax.swing.DefaultComboBoxModel;
 public class EditClusterPoints extends JDialog{
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	
-	public <E extends Distanciable<E>> EditClusterPoints(List<Cluster<E>> clusters, E point){
+	public <E extends Distanciable<E>> EditClusterPoints(final List<Cluster<E>> clusters, final E point){
 		getContentPane().setLayout(null);
 		
-		this.setBounds(0, 0, 260, 365);
-		System.out.println(clusters.size());
-		int currentClusterIndex = Cluster.getBelongsIndex(clusters, point);
+		this.setBounds(0, 0, 260, 235);
+		final int currentClusterIndex = Cluster.getBelongsIndex(clusters, point);
 		
 		JLabel lblElPuntoSeleccionado = new JLabel("El punto seleccionado");
 		JLabel lblPerteneceA = new JLabel("pertenece al cluster n°");
@@ -37,36 +38,41 @@ public class EditClusterPoints extends JDialog{
 		
 		for(int i = 0; i< clusters.size(); i++){
 			
-			items [i] = "Cluster n� " + i;
+			items [i] = "Cluster n° " + i;
 			
 		}
 		
-		JComboBox<String> comboBox = new JComboBox<>();
+		final JComboBox<String> comboBox = new JComboBox<>();
 		comboBox.setModel(new DefaultComboBoxModel<String>(items));
 		comboBox.setSelectedIndex(currentClusterIndex);
+		
 		comboBox.setBounds(49, 73, 141, 24);
 		getContentPane().add(comboBox);
 		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Destino");
-		buttonGroup.add(rdbtnNewRadioButton);
-		rdbtnNewRadioButton.setBounds(63, 155, 114, 23);
-		getContentPane().add(rdbtnNewRadioButton);
-		
-		JRadioButton rdbtnAsignarComo = new JRadioButton("Origen\n");
-		buttonGroup.add(rdbtnAsignarComo);
-		rdbtnAsignarComo.setBounds(63, 181, 114, 23);
-		getContentPane().add(rdbtnAsignarComo);
-		
-		JLabel lblAsignarComo = new JLabel("Asignar como...");
-		lblAsignarComo.setBounds(63, 132, 110, 15);
-		getContentPane().add(lblAsignarComo);
-		
 		JButton btnOk = new JButton("Ok");
-		btnOk.setBounds(60, 288, 117, 25);
+		btnOk.setBounds(60, 168, 117, 25);
+		btnOk.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				clusters.get(comboBox.getSelectedIndex()).addPoint(point);
+				clusters.get(currentClusterIndex).removePoint(point);
+				dispose();
+				
+			}
+		});
 		getContentPane().add(btnOk);
 		
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(60, 251, 117, 25);
+		btnCancelar.setBounds(60, 129, 117, 25);
+		btnCancelar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				
+			}
+		});
 		getContentPane().add(btnCancelar);
 		
 		

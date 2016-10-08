@@ -182,9 +182,6 @@ public class MapPanel extends JPanel{
 		JMenuItem mapExportar = new JMenuItem("Exportar");
 		mapArchivo.add(mapExportar);
 		
-		JToolBar toolBar = new JToolBar();
-		mapMenu.add(toolBar);
-		
 		final JToggleButton tglbtnRemove = new JToggleButton("Remover marcadores");
 		final JToggleButton tglbtnAgrega = new JToggleButton("Agregar marcadores");
 		
@@ -202,7 +199,7 @@ public class MapPanel extends JPanel{
 				
 			}
 		});
-		toolBar.add(tglbtnAgrega);
+		mapMenu.add(tglbtnAgrega);
 		
 		tglbtnRemove.addMouseListener(new MouseAdapter() {
 			@Override
@@ -217,7 +214,7 @@ public class MapPanel extends JPanel{
 			}
 		});
 		
-		toolBar.add(tglbtnRemove);
+		mapMenu.add(tglbtnRemove);
 		
 		
 		mapImportar.addActionListener(new ActionListener() {

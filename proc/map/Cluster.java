@@ -39,6 +39,11 @@ public class Cluster <E extends Distanciable<E>> implements Iterable<E>{
 	public void addPoint(E point){
 		points.add(point);
 	}
+	
+	public void removePoint(E point) {
+		points.remove(point);
+		
+	}
 
 	public void addAll(Iterable<E> vecinos) {
 		for (E e : vecinos) {
@@ -133,7 +138,7 @@ public class Cluster <E extends Distanciable<E>> implements Iterable<E>{
 
 		JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(file));
 		
-		int size = (int)jsonObject.get("size");
+		long size = (long)jsonObject.get("size");
 		
 		for (int i = 0; i < size; i++) {
 			
@@ -203,6 +208,8 @@ public class Cluster <E extends Distanciable<E>> implements Iterable<E>{
 		
 		return this.color;
 	}
+
+
 	
 	
 

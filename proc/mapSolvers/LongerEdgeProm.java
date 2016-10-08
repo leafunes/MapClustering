@@ -1,5 +1,6 @@
 package mapSolvers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import graph.AgmSolver;
@@ -80,29 +81,30 @@ public class LongerEdgeProm <E extends Distanciable<E>> extends MapSolver<E>{
 		MapEdge<E> longerEdge = null;
 		
 		for (MapEdge<E> actualEdge : edges) {
+			double actualRelDist = actualEdge.weight / getEdgesMedian(graphAGM.getNehiEdges(actualEdge));
 			
-			double actualRelDist = actualEdge.weight / getEdgeProm(graphAGM.getNehiEdges(actualEdge));
-			
-			if(actualRelDist < longerRelDist){
+			if(actualRelDist >= longerRelDist){
 				longerRelDist = actualRelDist;
 				longerEdge = actualEdge;
 			}
 
 			
 		}
-		
+
 		return longerEdge;
 		
 	}
 
 	
-	private double getEdgeProm(List<MapEdge<E>> edges){
+	private double getEdgesMedian( List<MapEdge<E>> edges){
 		
 		double prom = 0;
 		
-		for(MapEdge<E> edge: edges)prom += edge.weight;
-		
-		return prom/edges.size();
+		for(MapEdge<E> edge: edges)prom += edge.weight * edge.weight;
+										//Se eleva al caudrado para que los valores altos resalten mas
+										//que los valores pequeños
+
+		return Math.sqrt(prom/edges.size());
 	}
 	
 	

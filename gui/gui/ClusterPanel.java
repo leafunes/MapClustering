@@ -6,16 +6,20 @@ import java.awt.Dialog;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.json.simple.parser.ParseException;
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 import org.openstreetmap.gui.jmapviewer.DefaultMapController;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
+import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
+import org.openstreetmap.gui.jmapviewer.interfaces.MapPolygon;
 
 import graph.Distanciable;
 import map.Cluster;
@@ -35,17 +39,23 @@ import javax.swing.JToggleButton;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.File;
+import java.io.IOException;
 
 public class ClusterPanel  extends JPanel{
 	
 	private JMapViewer map;
 	private EditColor editColor;
 	private ClusterConfig clusterConfig;
+	private JFileChooser fileChooser;
 	private boolean hasActualized;
 	private boolean editPoints;
+	private File file;
+	private final Random gen = new Random();
 
 	LongerEdge<MapPoint> solverLongerEdge;
 	LongerEdgeProm<MapPoint> solverLongerEdgeProm;
@@ -62,6 +72,8 @@ public class ClusterPanel  extends JPanel{
 	
 	int cantClusters;
 	
+	//-----------------------------------------------//
+	
 	ClusterPanel(Component parent){
 		
 		setLayout(null);
@@ -70,6 +82,10 @@ public class ClusterPanel  extends JPanel{
 		solverLongerEdge = new LongerEdge<>();
 		solverLongerEdgeProm = new LongerEdgeProm<>();
 		map = new JMapViewer();
+		
+		fileChooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Cluster Files *.clus", "clus");
+		fileChooser.setFileFilter(filter);
 		
 		mapSolversList = new ArrayList<>();
 		mapSolversList.add(solverLongerEdge);
@@ -123,8 +139,36 @@ public class ClusterPanel  extends JPanel{
 		JMenuItem mntmImportar = new JMenuItem("Importar");
 		mnArchivo.add(mntmImportar);
 		
+		mntmImportar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fileChooser.showOpenDialog(null);
+				file = fileChooser.getSelectedFile();
+				importClusters();
+				
+				fileChooser.setSelectedFile(null);
+				
+			}
+		});
+		
 		JMenuItem mntmExportar = new JMenuItem("Exportar");
 		mnArchivo.add(mntmExportar);
+		
+		mntmExportar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				fileChooser.showSaveDialog(null);
+				file = fileChooser.getSelectedFile();
+				if (fileChooser.getFileFilter().getDescription().equals("Cluster Files *.clus") && file != null)
+					file = new File(file.getAbsoluteFile() + ".clus");
+					
+				exportClusters();
+				fileChooser.setSelectedFile(null);
+				
+			}
+		});
 		
 		JMenu mnOpciones = new JMenu("Opciones");
 		menuBar.add(mnOpciones);
@@ -180,9 +224,34 @@ public class ClusterPanel  extends JPanel{
 			}
 		});
 		menuBar.add(btnEditarClusters);
+	}
+	
+	public void exportClusters(){
 		
-		JToggleButton tglbtnMostrarCamino = new JToggleButton("Mostrar Camino");
-		menuBar.add(tglbtnMostrarCamino);
+		try {
+			Cluster.saveListToFile(clusters, file);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(this, "No se pudo guardar el archivo", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
+	
+	public void importClusters(){
+		if(file != null){
+			try {
+				clusters = Cluster.loadListFromFile(exportator, file);
+			}
+			catch (IOException e) {
+				JOptionPane.showMessageDialog(this, "No se pudo cargar el archivo", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		
+			catch (ClassCastException | ParseException e){
+				JOptionPane.showMessageDialog(this, "El archivo no tiene el formato requerido", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+	
+			changeColorsRandomly();
+			plotPoints();
+		}
 	}
 	
 	public void selectPoint(MapPoint toSelect){
@@ -226,6 +295,7 @@ public class ClusterPanel  extends JPanel{
 		map.removeAllMapMarkers();
 		
 		for (Cluster<MapPoint> cluster : clusters) {
+			
 			for(MapPoint point: cluster){
 				
 				MapMarker marker = new MapMarkerDot(point.getLat(), point.getLon());
@@ -285,10 +355,27 @@ public class ClusterPanel  extends JPanel{
 			if(!hasActualized) actualizeData();
 			try{
 				clusters = selectedSolver.solveMap(cantClusters, exportator);
+				changeColorsRandomly();
+				
 			}catch(IllegalArgumentException e){
 				actualizeData();
 			}
 			plotPoints();
 		}
+	}
+	
+	private void changeColorsRandomly(){
+		for (Cluster<MapPoint> cluster : clusters) {
+			
+			Color randomColor = genRandomColor();
+
+			cluster.setColor(randomColor);
+		}
+	}
+	
+	private Color genRandomColor(){
+		
+		return new Color(gen.nextInt(127)*2, gen.nextInt(127)*2, gen.nextInt(127)*2);
+		
 	}
 }
