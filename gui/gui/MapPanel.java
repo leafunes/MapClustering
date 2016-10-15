@@ -123,7 +123,7 @@ public class MapPanel extends JPanel{
 		
 		JMenu mapOpciones = new JMenu("Opciones");
 		mapMenu.add(mapOpciones);
-		
+	
 		JMenuItem mapAgregaCoordenadas = new JMenuItem("Agrregar desde coord.");
 		mapOpciones.add(mapAgregaCoordenadas);
 		
@@ -166,8 +166,7 @@ public class MapPanel extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				mapData = new MapData<>(exportator);
-				actualizePoints();
+				newMap();
 				
 			}
 		});
@@ -221,6 +220,7 @@ public class MapPanel extends JPanel{
 				file = fileChooser.getSelectedFile();
 				importMapFile();
 				loadMapPoints();
+				centerMap(12);
 				fileChooser.setSelectedFile(null);
 				
 			}
@@ -328,10 +328,6 @@ public class MapPanel extends JPanel{
 		
 		List<MapPoint> points = mapData.getPoints();
 		
-		Coordinate center = getPromMapData();
-		
-		map.setDisplayPositionByLatLon(center.getLat(), center.getLon(), 10);
-		
 		for(MapPoint point : points){
 			
 			Coordinate coord = new Coordinate(point.getLat(), point.getLon());
@@ -344,6 +340,18 @@ public class MapPanel extends JPanel{
 		
 	}
 	
+	private void centerMap(int zoom){
+
+		Coordinate center = getPromMapData();
+		
+		map.setDisplayPositionByLatLon(center.getLat(), center.getLon(), zoom);
+	}
+	
+	private void actualizePoints() {
+		map.removeAllMapMarkers();
+		loadMapPoints();
+	}
+	
 	private Coordinate getPromMapData(){
 		//Este metodo no deberia estar aca, deberia estar en MapData
 		//Pero queda mucho mas comodo que quede aqui.
@@ -353,11 +361,6 @@ public class MapPanel extends JPanel{
 		return MapPoint.listToMedianCoordinate(mapData.getPoints());
 		
 	}
-	
-	private void actualizePoints(){
-		
-		map.removeAllMapMarkers();
-		loadMapPoints();
-	}
+
 	
 }

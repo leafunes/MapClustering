@@ -215,6 +215,8 @@ public class ClusterPanel  extends JPanel{
 				
 				actualizeData();
 				generateClsuters();
+				changeColorsRandomly();
+				plotPoints();
 				
 			}
 		});
@@ -257,6 +259,7 @@ public class ClusterPanel  extends JPanel{
 	
 			changeColorsRandomly();
 			plotPoints();
+			centerMap(12);
 		}
 	}
 	
@@ -293,6 +296,9 @@ public class ClusterPanel  extends JPanel{
 			cantClusters = clusterConfig.cantClusters;
 			selectedSolver = mapSolversList.get( clusterConfig.getSelectedSolverIndex());
 			generateClsuters();
+			changeColorsRandomly();
+			plotPoints();
+			centerMap(map.getZoom());
 		}
 	}
 
@@ -300,11 +306,7 @@ public class ClusterPanel  extends JPanel{
 		
 		map.removeAllMapMarkers();
 		
-		Coordinate center = getPromMapData();
-		
-		map.setDisplayPositionByLatLon(center.getLat(), center.getLon(), 10);
-		
-		for (Cluster<MapPoint> cluster : clusters) {
+		if(clusters != null) for (Cluster<MapPoint> cluster : clusters) {
 			
 			for(MapPoint point: cluster){
 				
@@ -318,6 +320,12 @@ public class ClusterPanel  extends JPanel{
 			}
 		}
 		
+	}
+	
+	private void centerMap(int zoom){
+		Coordinate center = getPromMapData();
+		
+		map.setDisplayPositionByLatLon(center.getLat(), center.getLon(), zoom);
 	}
 	
 	private Coordinate getPromMapData(){
@@ -375,22 +383,21 @@ public class ClusterPanel  extends JPanel{
 			if(!hasActualized) actualizeData();
 			try{
 				clusters = selectedSolver.solveMap(cantClusters, exportator);
-				changeColorsRandomly();
 				
 			}catch(IllegalArgumentException e){
 				actualizeData();
 			}
-			plotPoints();
 		}
 	}
 	
 	private void changeColorsRandomly(){
-		for (Cluster<MapPoint> cluster : clusters) {
-			
-			Color randomColor = genRandomColor();
-
-			cluster.setColor(randomColor);
-		}
+		if(clusters != null)
+			for (Cluster<MapPoint> cluster : clusters) {
+				
+				Color randomColor = genRandomColor();
+	
+				cluster.setColor(randomColor);
+			}
 	}
 	
 	private Color genRandomColor(){

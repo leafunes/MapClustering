@@ -27,7 +27,6 @@ public class LongerEdgeProm <E extends Distanciable<E>> extends MapSolver<E>{
 		if(this.mapPoints.isEmpty())throw new IllegalArgumentException("La lista de puntos esta vacia");
 
 		removeEdges(cantClusters);
-		System.out.println(ClusterSolver.getClustersOf(clustersGraph, exportador));
 		
 		return ClusterSolver.getClustersOf(clustersGraph, exportador);
 		
