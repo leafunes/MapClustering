@@ -216,8 +216,7 @@ public class ClusterPanel  extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
-				ShowStats stats = new ShowStats(selectedSolver);
-				stats.setVisible(true);
+				showStats();
 				
 			}
 		});
@@ -350,6 +349,13 @@ public class ClusterPanel  extends JPanel{
 		
 		return MapPoint.listToMedianCoordinate(pointList);
 		
+	}
+	
+	private void showStats(){
+		if(isSolverOk()){
+			ShowStats stats = new ShowStats(selectedSolver);
+			stats.setVisible(true);
+		}
 	}
 	
 	private boolean isSolverOk(){
