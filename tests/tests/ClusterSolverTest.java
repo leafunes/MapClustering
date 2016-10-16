@@ -71,7 +71,7 @@ public class ClusterSolverTest {
 		assertTrue(visited.containsAll(vecindarioExpected));
 	}
 	
-	@Test(timeout = 100)
+	@Test(timeout = 300)
 	public void testGetClustersOf() {
 		MapGraph<GraphableInteger> map = map();
 		

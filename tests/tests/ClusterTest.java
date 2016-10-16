@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -48,10 +51,22 @@ public class ClusterTest {
 		return ret;
 		
 	}
+	
+	Cluster<GraphableInteger> getCluster(){
+		
+		Cluster<GraphableInteger>ret = new Cluster<>(exportador);
+		
+		ret.addPoint(a3);
+		ret.addPoint(a4);
+		ret.addPoint(a5);
+		
+		return ret;
+		
+	}
 
 	@Test
-	public void saveListToFileTest() {
-		List<Cluster<GraphableInteger>> list= getList();
+	public void saveAndLoadListTest() {
+		List<Cluster<GraphableInteger>> list = getList();
 		
 		File file = new File("tests" + File.separatorChar + "JsonTests"+File.separatorChar+"clustersTestOut.json");
 		
@@ -60,6 +75,121 @@ public class ClusterTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		assertTrue(file.exists());
+		
+
+		List<Cluster<GraphableInteger>> expected = null;
+		
+		try {
+			expected = Cluster.loadListFromFile(exportador, file);
+		} catch (IOException | ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		assertNotEquals(null, expected);
+		
+		assertEquals(expected, list);
+		
+	}
+	
+	@Test(expected = ParseException.class)
+	public void LoadNotJsonTest() throws IOException, ParseException {
+		
+		File file = new File("tests" + File.separatorChar + "JsonTests"+File.separatorChar+"notAJson.txt");
+		
+		List<Cluster<GraphableInteger>> list = Cluster.loadListFromFile(exportador, file);
+		
+		
+	}
+	
+	@Test(expected = IOException.class)
+	public void LoadOtherJsonTest() throws IOException, ParseException {
+		
+		File file = new File("tests" + File.separatorChar + "JsonTests"+File.separatorChar+"otherJson.json");
+		
+		List<Cluster<GraphableInteger>> list = Cluster.loadListFromFile(exportador, file);
+		
+		
+	}
+	
+	@Test
+	public void toJsonArrayTest(){
+		
+		Cluster<GraphableInteger> cluster = getCluster();
+		
+		JSONArray array = cluster.toJsonArray();
+		
+		JSONArray expected = generateJSON(new int[] {1,4,2});
+		
+		assertEquals(3, array.size());
+		
+		
+		for (Object value : expected) {
+			assertTrue(array.contains(value));
+		}
+		
+		
+		
+	}
+	
+	@Test
+	public void fromJsonArrayTest(){
+		
+		Cluster<GraphableInteger> cluster = new Cluster<>(exportador);
+		
+		JSONArray arrayGenerator = generateJSON(new int[] {1,4,2});
+		
+		try {
+			cluster.fromJsonArray(arrayGenerator);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Cluster<GraphableInteger> expected = getCluster(); 
+		
+		assertEquals(3, cluster.size());
+		
+		assertEquals(expected, cluster);
+		
+		
+	}
+	
+	@Test
+	public void getBelongsIndex(){
+		List<Cluster<GraphableInteger>> list = getList();
+		
+		assertEquals(0, Cluster.getBelongsIndex(list, a1));
+		assertEquals(1, Cluster.getBelongsIndex(list, a5));
+		assertEquals(-1, Cluster.getBelongsIndex(list, a6));
+		
+	}
+	
+	@Test
+	public void getClosestToListTest(){
+		List<Cluster<GraphableInteger>> list = getList();
+		
+		GraphableInteger value11 = new GraphableInteger(11);
+		
+		assertEquals(a1, Cluster.getClosestToList(list, value11, 4)); //El mas cercano al 11 es el 10
+		
+		
+	}
+	
+	private JSONArray generateJSON(int [] valuesToAdd){
+		
+		JSONArray ret = new JSONArray();
+		
+		for (int value : valuesToAdd) {
+			
+			JSONObject objectToAdd = new JSONObject();
+			objectToAdd.put("value", value);
+			ret.add(objectToAdd);
+		}
+		
+		return ret;
 	}
 
 }

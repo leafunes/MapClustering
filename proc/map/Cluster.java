@@ -1,6 +1,7 @@
 package map;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -142,6 +143,8 @@ public class Cluster <E extends Distanciable<E>> implements Iterable<E>{
 
 		JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(file));
 		
+		if (jsonObject.get("size") == null) throw new IOException("El archivo " + file.getAbsolutePath() + " no tiene el formato esperado");
+		
 		long size = (long)jsonObject.get("size");
 		
 		for (int i = 0; i < size; i++) {
@@ -149,6 +152,8 @@ public class Cluster <E extends Distanciable<E>> implements Iterable<E>{
 			Cluster<E> toAdd = new Cluster<>(exportador);
 			
 			JSONArray array = (JSONArray) jsonObject.get("clusterData"+i);
+			
+			if (array == null) throw new IOException("El archivo " + file.getAbsolutePath() + " no tiene el formato esperado");
 			
 			toAdd.fromJsonArray(array);
 			
@@ -175,7 +180,7 @@ public class Cluster <E extends Distanciable<E>> implements Iterable<E>{
 	}
 	
 	@SuppressWarnings("unchecked") //Es realmente necesario
-	protected JSONArray toJsonArray(){
+	public JSONArray toJsonArray(){
 		
 
 		JSONArray list = new JSONArray();
@@ -187,11 +192,11 @@ public class Cluster <E extends Distanciable<E>> implements Iterable<E>{
 		return list;
 	}
 	
-	protected void fromJsonArray(JSONArray list) throws IOException{
+	public void fromJsonArray(JSONArray list) throws IOException{
 		
 		
 		for (Object object : list) {
-			
+
 			JSONObject point = (JSONObject)object;
 			this.addPoint(exportador.fromJSON(point));
 			

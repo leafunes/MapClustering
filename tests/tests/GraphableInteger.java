@@ -17,7 +17,16 @@ class GraphableInteger implements Distanciable<GraphableInteger>{
 		@Override
 		public GraphableInteger fromJSON(JSONObject obj) {
 			
-			int value = (int)obj.get("value");
+			Object undefinedValue =  obj.get("value");
+			
+			int value = 0;
+			
+			if (undefinedValue.getClass() == Integer.class){	
+				value = (int)undefinedValue;
+			}
+			else if(undefinedValue.getClass() == Long.class){
+				value = (int)( (long)undefinedValue );
+			}
 			
 			return new GraphableInteger(value);
 			
