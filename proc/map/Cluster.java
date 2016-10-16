@@ -56,6 +56,10 @@ public class Cluster <E extends Distanciable<E>> implements Iterable<E>{
 		return points.contains(point);
 	}
 	
+	public int size(){
+		return points.size();
+	}
+	
 	public static <E extends Distanciable<E>> int getBelongsIndex(List <Cluster<E>> list, E toExam){
 		if(list == null)
 			throw new IllegalArgumentException("La lista es nula");
@@ -224,7 +228,5 @@ public class Cluster <E extends Distanciable<E>> implements Iterable<E>{
 	}
 
 
-	
-	
 
 }

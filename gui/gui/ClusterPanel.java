@@ -208,6 +208,20 @@ public class ClusterPanel  extends JPanel{
 		});
 		mnOpciones.add(mntmEditarColor);
 		
+		JMenuItem mntmMostrarEstadisticas = new JMenuItem("Mostrar estadisticas");
+		mnOpciones.add(mntmMostrarEstadisticas);
+		
+		mntmMostrarEstadisticas.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				ShowStats stats = new ShowStats(selectedSolver);
+				stats.setVisible(true);
+				
+			}
+		});
+		
 		JButton btnActualizar = new JButton("Actualizar");
 		btnActualizar.addMouseListener(new MouseAdapter() {
 			@Override

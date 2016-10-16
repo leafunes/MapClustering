@@ -28,7 +28,9 @@ public class LongerEdgeProm <E extends Distanciable<E>> extends MapSolver<E>{
 
 		removeEdges(cantClusters);
 		
-		return ClusterSolver.getClustersOf(clustersGraph, exportador);
+		finalClusters = ClusterSolver.getClustersOf(clustersGraph, exportador);
+		
+		return finalClusters;
 		
 	}
 	
