@@ -64,7 +64,7 @@ abstract public class MapSolver <E extends Distanciable<E>>{
 		for (Cluster<E> cluster : finalClusters) {
 			double distToMedian = median - cluster.size();
 			
-			desv = Math.pow(distToMedian, 2);
+			desv += Math.pow(distToMedian, 2);
 		}
 		
 		return desv / finalClusters.size();

@@ -7,7 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({ AgmSolverTest.class, MapDataTest.class, MapGraphTest.class, 
 	MapPointTest.class, ClusterSolverTest.class, MapEdgeTest.class, 
-	LongerEdgeTest.class, ClusterTest.class, LongerEdgePromTest.class})
+	LongerEdgeTest.class, ClusterTest.class, LongerEdgePromTest.class, MapSolverTest.class})
 public class AllTests {
 
 }
