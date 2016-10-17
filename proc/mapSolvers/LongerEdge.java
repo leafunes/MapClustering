@@ -72,6 +72,9 @@ public class LongerEdge <E extends Distanciable<E>> extends MapSolver<E>{
 		
 	}
 	
+	//Si bien estos metodos se repiten en LongerEdge y LongerEdgeProm, no los puedo meter en la superclase
+	//ya que un solver no necesariamente trabaja con grafos
+	
 	public void setMapPoints(List<E> mapPoints){
 		this.mapPoints.clear();
 		this.mapPoints.addAll(mapPoints);

@@ -55,7 +55,6 @@ public class LongerEdgeTest {
 		expected.addEdge(i8, i13);
 		return expected;
 	}
-	
 
 	@Test
 	public void generateGraphTest() {

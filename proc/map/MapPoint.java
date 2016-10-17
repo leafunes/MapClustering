@@ -86,7 +86,10 @@ public class MapPoint implements Distanciable<MapPoint>{
 	
 	
 	public static Coordinate listToMedianCoordinate(List<MapPoint> list){
-		
+		if(list == null) throw new IllegalArgumentException("Lista de puntos nula");
+		if(list.isEmpty()) return new Coordinate(0, 0);
+			
+			
 		double x = 0;
         double y = 0;
         double z = 0;

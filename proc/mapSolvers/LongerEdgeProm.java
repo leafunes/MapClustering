@@ -91,18 +91,50 @@ public class LongerEdgeProm <E extends Distanciable<E>> extends MapSolver<E>{
 		return longerEdge;
 		
 	}
-
 	
-	private double getEdgesMedian( List<MapEdge<E>> edges){
+	public double getEdgesMedian( List<MapEdge<E>> edges){
+		
+		if(edges == null) throw new IllegalArgumentException("Lista nula");
+		if(edges.isEmpty()) return 0;
 		
 		double prom = 0;
 		
 		for(MapEdge<E> edge: edges)prom += edge.weight * edge.weight;
 										//Se eleva al caudrado para que los valores altos resalten mas
-										//que los valores pequeÃ±os
+										//que los valores pequeños
 
 		return Math.sqrt(prom/edges.size());
 	}
 	
+	//Si bien estos metodos se repiten en LongerEdge y LongerEdgeProm, no los puedo meter en la superclase
+	//ya que un solver no necesariamente trabaja con grafos
+	public void setMapPoints(List<E> mapPoints){
+		this.mapPoints.clear();
+		this.mapPoints.addAll(mapPoints);
+	}
+	
+	public MapGraph<E> getGraphAGM() {
+		return graphAGM;
+	}
+
+	public MapGraph<E> getRawGraph() {
+		return rawGraph;
+	}
+
+	public MapGraph<E> getClustersGraph() {
+		return clustersGraph;
+	}
+
+	public void setGraphAGM(MapGraph<E> graphAGM) {
+		this.graphAGM = graphAGM;
+	}
+
+	public void setRawGraph(MapGraph<E> rawGraph) {
+		this.rawGraph = rawGraph;
+	}
+
+	public void setClustersGraph(MapGraph<E> clustersGraph) {
+		this.clustersGraph = clustersGraph;
+	}
 	
 }
