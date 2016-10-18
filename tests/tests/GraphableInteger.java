@@ -32,6 +32,7 @@ class GraphableInteger implements Distanciable<GraphableInteger>{
 			
 		}
 
+		@SuppressWarnings("unchecked")//Realmente necesario
 		@Override
 		public JSONObject toJSON(GraphableInteger obj) {
 			

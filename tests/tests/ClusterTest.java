@@ -10,10 +10,6 @@ import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import map.Cluster;
@@ -84,7 +80,6 @@ public class ClusterTest {
 		try {
 			expected = Cluster.loadListFromFile(exportador, file);
 		} catch (IOException | ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -99,6 +94,7 @@ public class ClusterTest {
 		
 		File file = new File("tests" + File.separatorChar + "JsonTests"+File.separatorChar+"notAJson.txt");
 		
+		@SuppressWarnings("unused")//Para hacer saltar la excepcion
 		List<Cluster<GraphableInteger>> list = Cluster.loadListFromFile(exportador, file);
 		
 		
@@ -109,6 +105,7 @@ public class ClusterTest {
 		
 		File file = new File("tests" + File.separatorChar + "JsonTests"+File.separatorChar+"otherJson.json");
 		
+		@SuppressWarnings("unused")//Para hacer saltar la excepcion
 		List<Cluster<GraphableInteger>> list = Cluster.loadListFromFile(exportador, file);
 		
 		
@@ -144,7 +141,6 @@ public class ClusterTest {
 		try {
 			cluster.fromJsonArray(arrayGenerator);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -178,6 +174,7 @@ public class ClusterTest {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	private JSONArray generateJSON(int [] valuesToAdd){
 		
 		JSONArray ret = new JSONArray();

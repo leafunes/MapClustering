@@ -3,14 +3,9 @@ package mapSolvers;
 import java.util.ArrayList;
 import java.util.List;
 
-import graph.MapEdge;
-import graph.MapGraph;
-import graph.AgmSolver;
-import graph.ClusterSolver;
 import graph.Distanciable;
 import map.Cluster;
 import map.Exportable;
-import map.MapPoint;
 
 abstract public class MapSolver <E extends Distanciable<E>>{
 	
@@ -23,6 +18,9 @@ abstract public class MapSolver <E extends Distanciable<E>>{
 	}
 	
 	public double getClusterProm(){
+		
+		if(finalClusters.isEmpty()) return 0;
+		
 		double prom = 0;
 		
 		for (Cluster<E> cluster : finalClusters) {
@@ -59,6 +57,8 @@ abstract public class MapSolver <E extends Distanciable<E>>{
 	
 	public double getClusterDesv(double median){
 		
+		if(finalClusters.isEmpty()) return 0;
+		
 		double desv = 0;
 		
 		for (Cluster<E> cluster : finalClusters) {
@@ -67,7 +67,9 @@ abstract public class MapSolver <E extends Distanciable<E>>{
 			desv += Math.pow(distToMedian, 2);
 		}
 		
-		return desv / finalClusters.size();
+		double ret = Math.sqrt( (desv / (finalClusters.size())) );
+		
+		return ret;
 	}
 	
 	public int getClustersCant(){

@@ -110,7 +110,7 @@ public class MapSolverTest {
 		
 		double desv = solver.getClusterDesv(prom);
 		
-		assertEquals(0.66666666666, desv, 10E-9);
+		assertEquals(0.816496, desv, 10E-5);
 		
 		
 	}

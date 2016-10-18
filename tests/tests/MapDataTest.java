@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.json.simple.parser.ParseException;
@@ -167,6 +166,7 @@ public class MapDataTest {
 		
 		assertEquals(mapP, closest);
 		
+		@SuppressWarnings("unused")// No se usa, es solo para ver que no falla con null
 		MapPoint closest2 = map.closestTo(null);
 	}
 

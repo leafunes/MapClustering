@@ -101,6 +101,7 @@ public class LongerEdgePromTest {
 		LongerEdgeProm<GraphableInteger> toTest = new LongerEdgeProm<GraphableInteger>();
 		List<MapEdge<GraphableInteger>> list = null;
 		
+		@SuppressWarnings("unused")//Es solo para hacer saltar la excepecion
 		double median = toTest.getEdgesMedian(list);
 		
 	}

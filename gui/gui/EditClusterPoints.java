@@ -3,7 +3,7 @@ package gui;
 import graph.Distanciable;
 
 import java.awt.Component;
-import java.awt.Label;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -11,20 +11,25 @@ import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
-import javax.swing.JRadioButton;
 import javax.swing.JButton;
-import javax.swing.ButtonGroup;
 
 import map.Cluster;
+
 import javax.swing.DefaultComboBoxModel;
 
 public class EditClusterPoints extends JDialog{
-	private final ButtonGroup buttonGroup = new ButtonGroup();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
-	public <E extends Distanciable<E>> EditClusterPoints(final List<Cluster<E>> clusters, final E point){
+	public <E extends Distanciable<E>> EditClusterPoints(final List<Cluster<E>> clusters, final E point, Component parent){
 		getContentPane().setLayout(null);
 		
-		this.setBounds(0, 0, 260, 235);
+		this.setSize( new Dimension(260, 235) );
+		
+		this.setLocationRelativeTo(parent);
+		
 		final int currentClusterIndex = Cluster.getBelongsIndex(clusters, point);
 		
 		JLabel lblElPuntoSeleccionado = new JLabel("El punto seleccionado");

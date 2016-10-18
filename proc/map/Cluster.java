@@ -1,7 +1,6 @@
 package map;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -111,6 +110,7 @@ public class Cluster <E extends Distanciable<E>> implements Iterable<E>{
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static <E extends Distanciable<E>> void saveListToFile(List <Cluster<E>> list, File file) throws IOException{
 
 		JSONObject obj = new JSONObject();

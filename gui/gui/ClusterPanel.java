@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dialog;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,19 +16,14 @@ import org.openstreetmap.gui.jmapviewer.Coordinate;
 import org.openstreetmap.gui.jmapviewer.DefaultMapController;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
-import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
-import org.openstreetmap.gui.jmapviewer.interfaces.MapPolygon;
 
-import graph.Distanciable;
 import map.Cluster;
 import map.MapPoint;
 import mapSolvers.LongerEdge;
 import mapSolvers.LongerEdgeProm;
 import mapSolvers.MapSolver;
 
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -39,10 +33,8 @@ import javax.swing.JToggleButton;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.io.IOException;
 
@@ -52,6 +44,7 @@ public class ClusterPanel  extends JPanel{
 
 	private JMapViewer map;
 	private File file;
+	private Component parent;
 	private int cantClusters;
 	
 	//Pop-ups windows
@@ -82,6 +75,7 @@ public class ClusterPanel  extends JPanel{
 		
 		setLayout(null);
 		super.setBounds(parent.getBounds());
+		this.parent = parent;
 		
 		LongerEdge<MapPoint> solverLongerEdge = new LongerEdge<>();
 		LongerEdgeProm<MapPoint> solverLongerEdgeProm = new LongerEdgeProm<>();
@@ -119,7 +113,7 @@ public class ClusterPanel  extends JPanel{
 		        if(e.getButton() == MouseEvent.BUTTON1){
 		    		if(editPoints && toEdit != null){
 		    			
-		    			EditClusterPoints editor = new EditClusterPoints(clusters, toEdit);
+		    			EditClusterPoints editor = new EditClusterPoints(clusters, toEdit, parent);
 		    			editor.setVisible(true);
 		    			
 		    		}
@@ -185,7 +179,7 @@ public class ClusterPanel  extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				
 					if(isListOk()){
-						clusterConfig = new ClusterConfig(mapSolversList, pointList);
+						clusterConfig = new ClusterConfig(mapSolversList, pointList, parent);
 						clusterConfig.setVisible(true);
 						changeClustersConfig();
 					}
@@ -199,7 +193,7 @@ public class ClusterPanel  extends JPanel{
 				
 				if(isListOk() && isSolverOk()  && isClustersOk()){
 					
-					editColor = new EditColor(clusters);
+					editColor = new EditColor(clusters, parent);
 					editColor.setVisible(true);
 					plotPoints();
 				}
@@ -353,7 +347,7 @@ public class ClusterPanel  extends JPanel{
 	
 	private void showStats(){
 		if(isSolverOk()){
-			ShowStats stats = new ShowStats(selectedSolver);
+			ShowStats stats = new ShowStats(selectedSolver, parent);
 			stats.setVisible(true);
 		}
 	}

@@ -3,14 +3,16 @@ package gui;
 import java.util.List;
 
 import javax.swing.JDialog;
+
+import java.awt.Component;
 import java.awt.Dialog;
-import java.awt.event.MouseListener;
+import java.awt.Dimension;
 
 import mapSolvers.MapSolver;
+
 import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
 import javax.swing.JSlider;
-import javax.swing.JFormattedTextField;
 import javax.swing.JSpinner;
 import javax.swing.JLabel;
 import javax.swing.DefaultComboBoxModel;
@@ -18,16 +20,21 @@ import javax.swing.JButton;
 import javax.swing.SpinnerNumberModel;
 
 import graph.Distanciable;
-import map.MapData;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
 public class ClusterConfig extends JDialog{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	int cantClusters;
 	private JComboBox<String> comboBox;
 	private JSlider slider;
@@ -36,9 +43,14 @@ public class ClusterConfig extends JDialog{
 	private JSpinner spinner;
 	private JButton btnAceptar;
 
-	<E extends Distanciable<E>> ClusterConfig(List<MapSolver<E>> list, List<E> pointList){
+	<E extends Distanciable<E>> ClusterConfig(List<MapSolver<E>> list, List<E> pointList, Component parent){
 		getContentPane().setLayout(null);
-		this.setBounds(0, 0, 250, 300);
+		
+		super.setLocationRelativeTo(parent);
+		
+		
+		
+		this.setSize(new Dimension(250,320));
 		
 		this.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
 		
@@ -95,7 +107,7 @@ public class ClusterConfig extends JDialog{
 				
 			}
 		});
-		btnAceptar.setBounds(86, 239, 91, 23);
+		btnAceptar.setBounds(64, 248, 91, 23);
 	}
 
 	private <E extends Distanciable<E>> void initClusterCant(List<E> pointList) {

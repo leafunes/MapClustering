@@ -4,11 +4,11 @@ import javax.swing.JDialog;
 
 import graph.Distanciable;
 import mapSolvers.MapSolver;
+
 import javax.swing.JLabel;
-import java.awt.Font;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,9 +16,17 @@ import javax.swing.JButton;
 
 public class ShowStats  extends JDialog{
 	
-	public <E extends Distanciable<E>> ShowStats(MapSolver<E> selectedSolver) {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public <E extends Distanciable<E>> ShowStats(MapSolver<E> selectedSolver, Component parent) {
 		setTitle("Estadisticas");
 		getContentPane().setLayout(null);
+		
+		this.setSize( new Dimension(240, 260) );	
+		this.setLocationRelativeTo(parent);
 		
 		JLabel lblCantDeClusters = new JLabel("Cant. de clusters");
 		JLabel lblPromDeTamao = new JLabel("Tama\u00F1o prom.");
@@ -71,6 +79,5 @@ public class ShowStats  extends JDialog{
 			}
 		});
 		
-		super.setBounds(0, 0, 240, 260);
 	}
 }
